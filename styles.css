@@ -1,48 +1,65 @@
-/* =========================================================
-   PERIÓDICO ESCOLAR DIGITAL · COLEGIO AKROS
-   styles.css
-========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display:ital@0;1&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap');
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 :root {
   --green: #16883c;
   --green-dark: #0c622d;
+  --magenta: #c0005b;
   --blue: #2344a1;
   --orange: #f05b24;
   --yellow: #f4c31c;
+
   --cream: #f3eddb;
   --paper: #f8f7f2;
   --white: #ffffff;
-  --black: #111111;
-  --grey: #686868;
-  --light-grey: #deded9;
 
-  --serif: "Libre Caslon Display", Georgia, serif;
-  --sans: "DM Sans", Arial, sans-serif;
+  --ink: #171a18;
+  --muted: #696e69;
+  --line: rgba(23, 26, 24, 0.13);
 
-  --max-width: 1280px;
+  --container: 1220px;
+  --header-height: 78px;
 }
+
 
 /* =========================================================
    RESET
 ========================================================= */
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
 }
 
 body {
-  font-family: var(--sans);
+  min-width: 320px;
+
   background: var(--paper);
-  color: var(--black);
-  overflow-x: hidden;
+  color: var(--ink);
+
+  font-family: "DM Sans", Arial, sans-serif;
+
+  line-height: 1.5;
+}
+
+body,
+button,
+a {
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
 
 a {
@@ -51,13 +68,31 @@ a {
 }
 
 button {
-  font: inherit;
+  color: inherit;
 }
 
-img {
-  display: block;
-  max-width: 100%;
+::selection {
+  background: var(--green);
+  color: white;
 }
+
+
+/* =========================================================
+   CONTENEDORES
+========================================================= */
+
+.header-container,
+.hero-container,
+.section-container,
+.footer-container {
+  width: min(
+    calc(100% - 48px),
+    var(--container)
+  );
+
+  margin-inline: auto;
+}
+
 
 /* =========================================================
    HEADER
@@ -65,833 +100,1319 @@ img {
 
 .site-header {
   position: sticky;
-  top: 0;
   z-index: 1000;
-  background: rgba(248, 247, 242, 0.95);
-  backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  top: 0;
+
+  height: var(--header-height);
+
+  background: rgba(248, 247, 242, 0.94);
+
+  border-bottom: 1px solid var(--line);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.header-inner {
-  max-width: var(--max-width);
-  min-height: 82px;
-  margin: auto;
-  padding: 0 30px;
+.header-container {
+  height: 100%;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+
+/* =========================================================
+   MARCA
+========================================================= */
+
 .brand {
   display: flex;
   align-items: center;
-  gap: 17px;
+
+  gap: 12px;
 }
 
-.brand-mark {
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -1px;
-  color: var(--green);
+.brand-logo {
+  width: 44px;
+  height: 44px;
+
+  flex: 0 0 auto;
+
+  padding: 3px;
+
+  display: grid;
+  place-items: center;
+
+  background: white;
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 7px;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
 }
 
 .brand-text {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid #aaa;
-  padding-left: 17px;
-  line-height: 1.2;
 }
 
-.brand-school {
-  font-size: 0.72rem;
-  font-weight: 700;
+.brand-text strong {
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: 1.04rem;
+  font-weight: 400;
+
+  line-height: 1.1;
+}
+
+.brand-text span {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 0.62rem;
+  font-weight: 600;
+
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
-.brand-project {
-  margin-top: 3px;
-  color: var(--grey);
-  font-size: 0.72rem;
-}
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
 
 .main-nav {
   display: flex;
   align-items: center;
+
   gap: 27px;
-
-  font-size: 0.79rem;
-  font-weight: 600;
 }
 
-.main-nav a {
+.main-nav > a {
   position: relative;
+
+  padding: 29px 0 27px;
+
+  color: #555b56;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  transition: color 0.18s ease;
 }
 
-.main-nav a:not(.nav-school)::after {
+.main-nav > a:not(.school-link)::after {
   content: "";
+
   position: absolute;
-  height: 1px;
-  width: 0;
+
   left: 0;
-  bottom: -5px;
-  background: var(--black);
-  transition: width 0.25s ease;
+  right: 0;
+  bottom: 19px;
+
+  height: 2px;
+
+  transform: scaleX(0);
+  transform-origin: center;
+
+  background: var(--green);
+
+  transition: transform 0.2s ease;
 }
 
-.main-nav a:hover::after {
-  width: 100%;
+.main-nav > a:hover,
+.main-nav > a.active {
+  color: var(--ink);
 }
 
-.nav-school {
-  border: 1px solid var(--black);
-  padding: 10px 15px;
-  transition: 0.2s;
+.main-nav > a:hover::after,
+.main-nav > a.active::after {
+  transform: scaleX(1);
 }
 
-.nav-school:hover {
-  color: white;
-  background: var(--black);
+.main-nav .school-link {
+  padding: 10px 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  border: 1px solid var(--line);
+  border-radius: 5px;
 }
+
+.main-nav .school-link:hover {
+  background: white;
+}
+
+
+/* =========================================================
+   BOTÓN MÓVIL
+========================================================= */
 
 .menu-button {
+  width: 40px;
+  height: 40px;
+
   display: none;
+
+  padding: 9px;
+
   border: 0;
+
   background: transparent;
+
   cursor: pointer;
 }
 
 .menu-button span {
-  display: block;
-  width: 25px;
+  width: 100%;
   height: 2px;
-  margin: 5px;
-  background: var(--black);
+
+  display: block;
+
+  margin: 5px 0;
+
+  background: var(--ink);
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
+
 
 /* =========================================================
    HERO
 ========================================================= */
 
 .hero {
-  min-height: 660px;
   position: relative;
-  overflow: hidden;
+
+  min-height: 650px;
 
   display: flex;
   align-items: center;
 
-  padding: 100px max(30px, calc((100vw - var(--max-width)) / 2 + 30px));
+  overflow: hidden;
 
-  border-bottom: 1px solid var(--black);
+  background:
+    linear-gradient(
+      115deg,
+      #efe9d7 0%,
+      #f5f1e6 52%,
+      #ece6d3 100%
+    );
 }
 
-.hero-content {
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 1px;
+
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.hero-container {
   position: relative;
-  z-index: 3;
-  width: min(790px, 75%);
+  z-index: 5;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(260px, 0.65fr);
+
+  align-items: center;
+
+  gap: 70px;
+
+  padding-top: 70px;
+  padding-bottom: 70px;
 }
+
+
+/* =========================================================
+   DECORACIÓN HERO
+========================================================= */
+
+.hero-decoration {
+  position: absolute;
+
+  pointer-events: none;
+}
+
+.hero-decoration-one {
+  width: 470px;
+  height: 470px;
+
+  right: -120px;
+  top: -140px;
+
+  border-radius: 50%;
+
+  background: rgba(22, 136, 60, 0.08);
+}
+
+.hero-decoration-two {
+  width: 300px;
+  height: 300px;
+
+  right: 145px;
+  bottom: -190px;
+
+  transform: rotate(22deg);
+
+  background: rgba(192, 0, 91, 0.06);
+}
+
+
+/* =========================================================
+   HERO TEXTO
+========================================================= */
 
 .eyebrow,
 .section-kicker {
-  color: var(--green);
-  font-size: 0.72rem;
+  display: inline-block;
+
+  color: var(--green-dark);
+
+  font-size: 0.65rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+
+  letter-spacing: 0.15em;
 }
 
 .hero h1 {
-  margin-top: 24px;
+  max-width: 800px;
 
-  font-family: var(--serif);
-  font-size: clamp(4.4rem, 8vw, 7.7rem);
-  line-height: 0.87;
-  letter-spacing: -0.055em;
+  margin-top: 22px;
+
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: clamp(3.6rem, 6vw, 6.2rem);
   font-weight: 400;
+
+  line-height: 0.94;
+
+  letter-spacing: -0.045em;
 }
 
-.hero h1 em {
+.hero h1 em,
+.section-heading h2 em,
+.featured-content h2 em,
+.archive-heading h2 em {
   color: var(--green);
-  font-style: italic;
+
   font-weight: 400;
 }
 
 .hero-description {
-  width: min(520px, 100%);
-  margin-top: 38px;
+  max-width: 600px;
 
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #444;
+  margin-top: 28px;
+
+  color: #5f655f;
+
+  font-size: 1rem;
+
+  line-height: 1.75;
+}
+
+.hero-actions {
+  margin-top: 35px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.primary-button,
+.secondary-button,
+.text-button {
+  min-height: 47px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  padding: 0 20px;
+
+  border-radius: 4px;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .primary-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 35px;
-
-  margin-top: 37px;
-  padding: 15px 20px;
-
+  background: var(--green);
   color: white;
-  background: var(--black);
-
-  font-size: 0.78rem;
-  font-weight: 700;
-
-  transition: 0.25s;
-}
-
-.primary-button span {
-  font-size: 1.1rem;
 }
 
 .primary-button:hover {
-  background: var(--green);
+  transform: translateY(-2px);
+
+  background: var(--green-dark);
 }
 
-.hero-label {
-  position: absolute;
-  right: 4%;
-  bottom: 55px;
+.secondary-button {
+  border: 1px solid rgba(0, 0, 0, 0.17);
 
-  z-index: 2;
-
-  font-size: clamp(1.2rem, 2vw, 2rem);
-  line-height: 0.9;
-  font-weight: 700;
-  text-align: right;
-  letter-spacing: -0.05em;
+  background: rgba(255, 255, 255, 0.26);
 }
 
-.hero-decoration {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.92;
+.secondary-button:hover {
+  transform: translateY(-2px);
+
+  background: white;
 }
 
-.hero-decoration-left {
-  width: 300px;
-  height: 300px;
-  left: -180px;
-  top: 75px;
-  background: var(--yellow);
+.text-button {
+  padding-left: 8px;
+  padding-right: 8px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+  border-radius: 0;
 }
 
-.hero-decoration-right {
-  width: 520px;
-  height: 520px;
-  right: -150px;
-  top: 50px;
-  border: 95px solid var(--blue);
+.text-button:hover {
+  border-color: var(--green);
 }
+
 
 /* =========================================================
-   PUBLICACIONES
+   HERO EDITORIAL
 ========================================================= */
 
-.publications-section {
-  max-width: var(--max-width);
-  margin: auto;
-  padding: 120px 30px;
-}
-
-.section-heading {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 60px;
-  align-items: end;
-  margin-bottom: 65px;
-}
-
-.section-heading h2 {
-  margin-top: 16px;
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(3.2rem, 5vw, 5.4rem);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-}
-
-.section-heading h2 span {
-  color: var(--green);
-  font-style: italic;
-}
-
-.section-heading > p {
-  max-width: 390px;
-  padding-bottom: 6px;
-  line-height: 1.7;
-  color: var(--grey);
-}
-
-.publication-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--black);
-  border-bottom: 1px solid var(--black);
-}
-
-.publication-card {
-  min-height: 440px;
+.hero-editorial {
   position: relative;
+
+  min-height: 310px;
+
+  display: flex;
+  align-items: flex-end;
+
   padding: 35px;
+
+  overflow: hidden;
+
+  color: white;
+
+  background: var(--green-dark);
+
+  border-radius: 2px;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.14);
+}
+
+.hero-editorial::before {
+  content: "";
+
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  right: -45px;
+  top: -50px;
+
+  transform: rotate(45deg);
+
+  background: var(--magenta);
+}
+
+.hero-editorial::after {
+  content: "";
+
+  position: absolute;
+
+  width: 110px;
+  height: 110px;
+
+  right: 38px;
+  top: 28px;
+
+  transform: rotate(45deg);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.editorial-number {
+  position: absolute;
+
+  left: 25px;
+  top: 8px;
+
+  color: rgba(255, 255, 255, 0.08);
+
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: 11rem;
+
+  line-height: 1;
+}
+
+.editorial-copy {
+  position: relative;
+  z-index: 5;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-
-  transition:
-    transform 0.25s ease,
-    background 0.25s ease;
 }
 
-.publication-card + .publication-card {
-  border-left: 1px solid var(--black);
+.editorial-copy > span {
+  margin-bottom: 8px;
+
+  color: rgba(255, 255, 255, 0.66);
+
+  font-size: 0.58rem;
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.editorial-copy strong {
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: 2.3rem;
+  font-weight: 400;
+
+  line-height: 1;
+}
+
+.editorial-copy small {
+  margin-top: 9px;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 0.66rem;
+}
+
+
+/* =========================================================
+   SECCIÓN PUBLICACIONES
+========================================================= */
+
+.publications-section {
+  padding: 115px 0 125px;
+
+  background: var(--paper);
+}
+
+.section-heading,
+.archive-heading {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.3fr)
+    minmax(260px, 0.7fr);
+
+  align-items: end;
+
+  gap: 70px;
+
+  margin-bottom: 54px;
+}
+
+.section-heading h2,
+.archive-heading h2 {
+  max-width: 650px;
+
+  margin-top: 13px;
+
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: clamp(2.8rem, 4.5vw, 4.5rem);
+  font-weight: 400;
+
+  line-height: 0.98;
+
+  letter-spacing: -0.035em;
+}
+
+.section-heading > p,
+.archive-heading > p {
+  max-width: 430px;
+
+  color: var(--muted);
+
+  font-size: 0.88rem;
+
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   TARJETAS PUBLICACIONES
+========================================================= */
+
+.publication-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 1px;
+
+  background: rgba(0, 0, 0, 0.1);
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.publication-card {
+  min-height: 430px;
+
+  padding: 27px 28px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: white;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+
+  overflow: hidden;
 }
 
 .publication-card:hover {
-  transform: translateY(-8px);
+  position: relative;
+  z-index: 3;
+
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 24px 55px rgba(0, 0, 0, 0.1);
 }
 
-.desayunito-card:hover {
-  background: #fff1dd;
-}
+.publication-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-.desayuno-card:hover {
-  background: #e8f2e7;
-}
-
-.english-card:hover {
-  background: #e8edfa;
+  gap: 10px;
 }
 
 .publication-number {
-  font-family: var(--serif);
-  font-size: 1.1rem;
+  color: #a4aaa5;
+
+  font-size: 0.62rem;
+}
+
+.publication-level {
+  color: #8a908b;
+
+  font-size: 0.54rem;
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
 }
 
 .publication-card-content {
   margin-top: auto;
+  margin-bottom: auto;
+
+  padding: 50px 0;
 }
 
-.publication-audience {
+.publication-label {
   display: inline-block;
-  margin-bottom: 16px;
 
-  font-size: 0.69rem;
+  margin-bottom: 14px;
+
+  font-size: 0.57rem;
   font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
 
-.desayunito-card .publication-audience {
-  color: var(--orange);
-}
-
-.desayuno-card .publication-audience {
-  color: var(--green);
-}
-
-.english-card .publication-audience {
-  color: var(--blue);
+  letter-spacing: 0.14em;
 }
 
 .publication-card h3 {
-  font-family: var(--serif);
-  font-size: clamp(2.4rem, 3vw, 3.5rem);
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: clamp(2.2rem, 3vw, 3.3rem);
   font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+
+  line-height: 0.98;
 }
 
-.publication-card h3 small {
+.publication-card h3 strong {
   display: block;
-  margin-top: 8px;
-  font-family: var(--sans);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0;
+
+  font-weight: 400;
 }
 
 .publication-card p {
-  margin-top: 22px;
-  line-height: 1.6;
-  color: #555;
-  font-size: 0.88rem;
+  max-width: 310px;
+
+  margin-top: 20px;
+
+  color: #676c68;
+
+  font-size: 0.78rem;
+
+  line-height: 1.7;
 }
 
-.publication-link,
-.publication-status {
-  display: inline-flex;
-  margin-top: 30px;
+.publication-card-footer {
+  min-height: 43px;
 
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-}
-
-.publication-link {
+  display: flex;
   align-items: center;
-  gap: 25px;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  font-size: 0.68rem;
+  font-weight: 600;
 }
 
-.publication-link span {
-  transition: transform 0.2s;
+.publication-card-footer a:hover {
+  text-decoration: underline;
 }
 
-.publication-link:hover span {
-  transform: translateX(7px);
+.card-arrow {
+  font-size: 1rem;
 }
 
-.publication-status {
-  color: #999;
+
+/* =========================================================
+   IDENTIDAD DE CADA PUBLICACIÓN
+========================================================= */
+
+.desayunito-card {
+  border-top: 5px solid var(--orange);
 }
+
+.desayunito-card .publication-label,
+.desayunito-card .card-arrow {
+  color: var(--orange);
+}
+
+.desayuno-card {
+  border-top: 5px solid var(--green);
+}
+
+.desayuno-card .publication-label,
+.desayuno-card .card-arrow {
+  color: var(--green);
+}
+
+.english-card {
+  border-top: 5px solid var(--blue);
+}
+
+.english-card .publication-label,
+.english-card .card-arrow {
+  color: var(--blue);
+}
+
 
 /* =========================================================
    EDICIÓN DESTACADA
 ========================================================= */
 
 .featured-edition {
-  background: #111;
+  padding: 120px 0;
+
+  overflow: hidden;
+
   color: white;
-  padding: 110px max(30px, calc((100vw - var(--max-width)) / 2 + 30px));
+
+  background:
+    linear-gradient(
+      120deg,
+      #0d2c1a 0%,
+      #0b3a20 45%,
+      #07532b 100%
+    );
 }
 
-.featured-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-
-  padding-bottom: 30px;
-  border-bottom: 1px solid #444;
-}
-
-.featured-heading .section-kicker {
-  color: #6bc47e;
-}
-
-.featured-heading h2 {
-  margin-top: 10px;
-
-  font-family: var(--serif);
-  font-size: clamp(3rem, 5vw, 5rem);
-  font-weight: 400;
-}
-
-.featured-date {
-  color: #aaa;
-  text-align: right;
-  font-size: 0.7rem;
-  line-height: 1.5;
-  letter-spacing: 0.18em;
-}
-
-.featured-layout {
+.featured-container {
   display: grid;
-  grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.1fr);
-  gap: clamp(60px, 9vw, 140px);
+
+  grid-template-columns:
+    minmax(310px, 0.75fr)
+    minmax(0, 1.25fr);
+
   align-items: center;
 
-  padding-top: 70px;
+  gap: 100px;
 }
 
-/* Revista */
 
-.magazine-preview {
+/* =========================================================
+   PORTADA DESTACADA
+========================================================= */
+
+.featured-cover-area {
   position: relative;
-  width: min(100%, 460px);
-  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.magazine-shadow {
+.featured-cover-shadow {
   position: absolute;
-  inset: 30px -25px -30px 30px;
-  background: rgba(0, 0, 0, 0.65);
-  filter: blur(25px);
+
+  width: 75%;
+  height: 50px;
+
+  left: 50%;
+  bottom: 42px;
+
+  transform: translateX(-50%);
+
+  background: rgba(0, 0, 0, 0.55);
+
+  filter: blur(28px);
+
+  border-radius: 50%;
 }
 
-.magazine-cover {
+.featured-cover {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 
-  aspect-ratio: 0.72;
-  padding: 20px;
+  width: min(100%, 390px);
 
-  color: var(--black);
-  background:
-    linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.8)),
-    #eee9dd;
+  overflow: hidden;
+
+  background: white;
 
   box-shadow:
-    0 30px 70px rgba(0,0,0,.55),
-    -8px 0 15px rgba(255,255,255,.04);
+    0 35px 75px rgba(0, 0, 0, 0.42);
 
-  transform: rotate(-2deg);
-  transition: transform 0.35s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.magazine-preview:hover .magazine-cover {
-  transform: rotate(0deg) translateY(-6px);
+.featured-cover:hover {
+  transform:
+    translateY(-7px)
+    rotate(-1deg);
+
+  box-shadow:
+    0 45px 90px rgba(0, 0, 0, 0.5);
 }
 
-.cover-placeholder {
-  height: 100%;
-  border-top: 2px solid var(--black);
-  padding-top: 16px;
+.featured-cover img {
+  width: 100%;
+  height: auto;
 }
 
-.cover-top {
-  font-family: Georgia, serif;
-  font-size: 0.48rem;
-  letter-spacing: 0.16em;
+.cover-caption {
+  position: relative;
+  z-index: 4;
+
+  margin-top: 25px;
+
+  color: rgba(255, 255, 255, 0.48);
+
+  font-size: 0.57rem;
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
 }
 
-.cover-placeholder h3 {
-  color: var(--green);
-  margin: 15px 0 18px;
 
-  font-family: Georgia, serif;
-  font-size: clamp(3rem, 5vw, 5rem);
-  line-height: 1;
+/* =========================================================
+   CONTENIDO DESTACADO
+========================================================= */
+
+.featured-content .section-kicker {
+  color: #85d79f;
 }
 
-.cover-image-placeholder {
-  height: 48%;
-  margin-bottom: 22px;
+.edition-meta {
+  margin-top: 18px;
 
   display: flex;
-  justify-content: center;
   align-items: center;
 
-  border: 8px solid var(--blue);
-  background:
-    linear-gradient(135deg, #c8c8c8, #666);
+  gap: 10px;
 
-  color: white;
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-}
+  flex-wrap: wrap;
 
-.cover-placeholder strong {
-  font-family: Georgia, serif;
-  font-size: clamp(1.3rem, 2vw, 2rem);
-  line-height: 1;
-}
+  color: rgba(255, 255, 255, 0.57);
 
-/* Contenido edición */
-
-.featured-tag {
-  color: #78c78a;
-  font-size: 0.68rem;
+  font-size: 0.58rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+
+  letter-spacing: 0.1em;
 }
 
-.featured-content > h3 {
-  margin-top: 17px;
+.meta-dot {
+  width: 3px;
+  height: 3px;
 
-  font-family: var(--serif);
-  font-size: clamp(3.3rem, 5vw, 5.5rem);
-  line-height: 0.9;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.featured-content h2 {
+  max-width: 700px;
+
+  margin-top: 24px;
+
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: clamp(3rem, 5vw, 5rem);
   font-weight: 400;
+
+  line-height: 0.96;
+
   letter-spacing: -0.04em;
 }
 
-.featured-intro {
-  max-width: 500px;
-  margin-top: 30px;
-
-  color: #aaa;
-  font-size: 0.95rem;
-  line-height: 1.7;
+.featured-content h2 em {
+  color: #a7d9b7;
 }
 
-.edition-topics {
-  margin-top: 42px;
-  border-top: 1px solid #444;
+.featured-description {
+  max-width: 600px;
+
+  margin-top: 27px;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 0.9rem;
+
+  line-height: 1.8;
 }
 
-.topic {
+
+/* =========================================================
+   CONTENIDOS EDICIÓN
+========================================================= */
+
+.edition-contents {
+  margin-top: 37px;
+
   display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 15px;
 
-  padding: 16px 0;
-  border-bottom: 1px solid #333;
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  border-left: 1px solid rgba(255, 255, 255, 0.13);
 }
 
-.topic > span {
-  color: #6bc47e;
-  font-family: var(--serif);
-  font-size: 0.95rem;
+.edition-content-item {
+  min-height: 100px;
+
+  display: grid;
+
+  grid-template-columns:
+    34px 1fr;
+
+  gap: 10px;
+
+  padding: 19px 18px;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.13);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
 }
 
-.topic strong {
+.edition-content-item > span {
+  color: #74c68f;
+
+  font-size: 0.58rem;
+}
+
+.edition-content-item strong {
   display: block;
-  font-family: var(--serif);
-  font-size: 1.05rem;
+
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: 1rem;
   font-weight: 400;
 }
 
-.topic p {
-  margin-top: 3px;
-  color: #888;
-  font-size: 0.76rem;
+.edition-content-item p {
+  margin-top: 4px;
+
+  color: rgba(255, 255, 255, 0.52);
+
+  font-size: 0.64rem;
+
+  line-height: 1.5;
 }
 
 .featured-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 38px;
-}
+  margin-top: 32px;
 
-.read-button {
   display: flex;
   align-items: center;
-  gap: 18px;
 
-  background: var(--green);
-  padding: 15px 25px;
-
-  transition: 0.25s;
-}
-
-.read-button:hover {
-  background: #20a34b;
-  transform: translateY(-2px);
-}
-
-.read-icon {
-  font-size: 1.4rem;
-}
-
-.read-button small {
-  display: block;
-  margin-bottom: 2px;
-
-  font-size: 0.55rem;
-  letter-spacing: 0.13em;
-  opacity: 0.7;
-}
-
-.read-button span:last-child {
-  font-size: 0.86rem;
-  font-weight: 600;
-}
-
-.download-button {
-  display: flex;
-  align-items: center;
   gap: 20px;
 
-  border: 1px solid #555;
-  padding: 15px 20px;
-
-  font-size: 0.76rem;
-  transition: 0.2s;
+  flex-wrap: wrap;
 }
 
-.download-button:hover {
-  border-color: white;
+.featured-actions .primary-button {
+  background: white;
+  color: var(--green-dark);
 }
+
+.featured-actions .primary-button:hover {
+  background: var(--cream);
+}
+
+.featured-actions .text-button {
+  color: white;
+
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
 
 /* =========================================================
    ARCHIVO
 ========================================================= */
 
 .archive-section {
-  max-width: var(--max-width);
-  margin: auto;
-  padding: 120px 30px;
+  padding: 115px 0 130px;
+
+  background: var(--cream);
 }
 
-.archive-heading {
+.archive-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 50px;
-  align-items: end;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 24px;
 }
 
-.archive-heading h2 {
-  margin-top: 14px;
 
-  font-family: var(--serif);
-  font-size: clamp(3rem, 5vw, 5rem);
+/* =========================================================
+   TARJETA ARCHIVO
+========================================================= */
+
+.archive-card {
+  min-height: 370px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 0.8fr)
+    minmax(0, 1.2fr);
+
+  background: white;
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.archive-cover {
+  position: relative;
+
+  min-height: 370px;
+
+  padding: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #e2dfd4;
+}
+
+.archive-cover::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 0 70px rgba(0, 0, 0, 0.07);
+}
+
+.archive-cover img {
+  position: relative;
+  z-index: 2;
+
+  max-height: 315px;
+  width: auto;
+
+  box-shadow:
+    0 18px 35px rgba(0, 0, 0, 0.22);
+
+  transition: transform 0.22s ease;
+}
+
+.archive-cover:hover img {
+  transform: scale(1.025);
+}
+
+.archive-info {
+  padding: 35px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.archive-publication {
+  color: var(--green);
+
+  font-size: 0.58rem;
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+}
+
+.archive-info h3 {
+  margin-top: 13px;
+
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: 2.2rem;
   font-weight: 400;
-  letter-spacing: -0.04em;
+
+  line-height: 1;
 }
 
-.archive-heading > p {
-  max-width: 390px;
-  color: var(--grey);
-  line-height: 1.7;
+.archive-info p {
+  margin-top: 9px;
+
+  color: var(--muted);
+
+  font-size: 0.72rem;
 }
 
-.archive-placeholder {
-  display: grid;
-  grid-template-columns: 80px 1fr auto;
-  gap: 25px;
+.archive-read {
+  width: fit-content;
+
+  margin-top: 34px;
+
+  display: inline-flex;
   align-items: center;
 
-  margin-top: 65px;
-  padding: 30px 0;
+  gap: 12px;
 
-  border-top: 1px solid var(--black);
-  border-bottom: 1px solid var(--black);
+  color: var(--green-dark);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.archive-read:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   PLACEHOLDER ARCHIVO
+========================================================= */
+
+.archive-placeholder {
+  min-height: 370px;
+
+  padding: 45px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+
+  color: #727872;
 }
 
 .archive-placeholder > span {
-  font-family: var(--serif);
-  font-size: 1.4rem;
+  width: 56px;
+  height: 56px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 18px;
+
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+
+  font-family: Georgia, serif;
+  font-size: 1.7rem;
 }
 
-.archive-line {
-  height: 1px;
-  background: #bbb;
+.archive-placeholder strong {
+  color: var(--ink);
+
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 
 .archive-placeholder p {
-  font-size: 0.85rem;
+  max-width: 290px;
+
+  margin-top: 9px;
+
+  font-size: 0.72rem;
+
+  line-height: 1.65;
 }
+
 
 /* =========================================================
    FOOTER
 ========================================================= */
 
 .site-footer {
+  padding: 34px 0;
+
   color: white;
-  background: var(--green-dark);
+
+  background: #111512;
 }
 
-.footer-main {
-  max-width: var(--max-width);
-  margin: auto;
-  padding: 80px 30px;
-
+.footer-container {
   display: grid;
-  grid-template-columns: 1.5fr 0.8fr 1fr;
-  gap: 80px;
+
+  grid-template-columns:
+    1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 30px;
 }
 
-.footer-akros {
-  display: block;
-  margin-bottom: 18px;
+.footer-brand {
+  display: flex;
+  align-items: center;
 
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  gap: 11px;
 }
 
-.footer-brand h2 {
-  font-family: var(--serif);
-  font-size: clamp(2.5rem, 4vw, 4rem);
-  line-height: 0.95;
+.footer-brand img {
+  width: 36px;
+  height: 36px;
+
+  padding: 3px;
+
+  object-fit: contain;
+
+  background: white;
+
+  border-radius: 5px;
+}
+
+.footer-brand > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-brand strong {
+  font-family: "Libre Caslon Display", Georgia, serif;
+
+  font-size: 0.88rem;
   font-weight: 400;
 }
 
-.footer-publications,
-.footer-contact {
+.footer-brand span {
+  margin-top: 2px;
+
+  color: rgba(255, 255, 255, 0.45);
+
+  font-size: 0.53rem;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.footer-publications {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: center;
 
-  font-size: 0.8rem;
+  gap: 10px;
+
+  color: rgba(255, 255, 255, 0.5);
+
+  font-size: 0.56rem;
 }
 
-.footer-publications > p,
-.footer-contact > p {
-  margin-bottom: 10px;
+.footer-dot {
+  width: 3px;
+  height: 3px;
 
-  color: #aad9b5;
-  font-size: 0.63rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.24);
 }
 
-.footer-publications a:hover,
-.footer-contact a:hover {
-  text-decoration: underline;
+.footer-copy {
+  justify-self: end;
+
+  color: rgba(255, 255, 255, 0.4);
+
+  font-size: 0.55rem;
 }
 
-.footer-contact span {
-  color: #c5dfcb;
-  line-height: 1.5;
-}
-
-.footer-bottom {
-  max-width: var(--max-width);
-  margin: auto;
-  padding: 22px 30px;
-
-  display: flex;
-  justify-content: space-between;
-
-  border-top: 1px solid rgba(255,255,255,.2);
-
-  color: #b5d8bd;
-  font-size: 0.68rem;
-}
 
 /* =========================================================
-   RESPONSIVE
+   TABLET
 ========================================================= */
 
-@media (max-width: 900px) {
-
-  .menu-button {
-    display: block;
-  }
+@media (max-width: 1000px) {
 
   .main-nav {
-    display: none;
-
-    position: absolute;
-    top: 82px;
-    left: 0;
-    right: 0;
-
-    padding: 25px 30px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 20px;
-
-    background: var(--paper);
-    border-bottom: 1px solid var(--black);
+    gap: 18px;
   }
 
-  .main-nav.open {
-    display: flex;
-  }
+  .hero-container {
+    grid-template-columns:
+      minmax(0, 1.15fr)
+      minmax(240px, 0.85fr);
 
-  .nav-school {
-    text-align: center;
-  }
-
-  .hero {
-    min-height: 620px;
-  }
-
-  .hero-content {
-    width: 100%;
-  }
-
-  .hero-label {
-    display: none;
-  }
-
-  .hero-decoration-right {
-    opacity: 0.18;
-  }
-
-  .section-heading,
-  .archive-heading {
-    grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 45px;
   }
 
   .publication-grid {
@@ -899,114 +1420,568 @@ img {
   }
 
   .publication-card {
-    min-height: 330px;
+    min-height: 320px;
   }
 
-  .publication-card + .publication-card {
-    border-left: 0;
-    border-top: 1px solid var(--black);
+  .publication-card-content {
+    padding: 38px 0;
   }
 
-  .featured-layout {
+  .featured-container {
+    gap: 55px;
+  }
+
+  .archive-grid {
     grid-template-columns: 1fr;
-  }
-
-  .magazine-preview {
-    width: min(80%, 430px);
-  }
-
-  .footer-main {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .footer-brand {
-    grid-column: 1 / -1;
   }
 }
 
-@media (max-width: 600px) {
 
-  .header-inner {
-    min-height: 70px;
-    padding: 0 20px;
+/* =========================================================
+   NAVEGACIÓN MÓVIL
+========================================================= */
+
+@media (max-width: 800px) {
+
+  :root {
+    --header-height: 68px;
   }
 
-  .brand-text {
-    display: none;
+  .header-container,
+  .hero-container,
+  .section-container,
+  .footer-container {
+    width: min(
+      calc(100% - 30px),
+      var(--container)
+    );
+  }
+
+  .menu-button {
+    display: block;
   }
 
   .main-nav {
-    top: 70px;
+    position: absolute;
+
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+
+    display: none;
+
+    padding: 10px 15px 20px;
+
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 0;
+
+    background: var(--paper);
+
+    border-bottom: 1px solid var(--line);
+
+    box-shadow:
+      0 20px 35px rgba(0, 0, 0, 0.08);
+  }
+
+  .main-nav.open {
+    display: flex;
+  }
+
+  .main-nav > a {
+    padding: 15px 4px;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  .main-nav > a:not(.school-link)::after {
+    display: none;
+  }
+
+  .main-nav .school-link {
+    margin-top: 10px;
+
+    justify-content: center;
+
+    border-bottom: 1px solid var(--line);
   }
 
   .hero {
-    min-height: 590px;
-    padding: 80px 20px;
+    min-height: auto;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr;
+
+    gap: 50px;
+
+    padding-top: 80px;
+    padding-bottom: 70px;
   }
 
   .hero h1 {
-    font-size: clamp(3.6rem, 17vw, 5.2rem);
+    font-size: clamp(3.4rem, 14vw, 5.2rem);
+  }
+
+  .hero-editorial {
+    min-height: 260px;
+  }
+
+  .section-heading,
+  .archive-heading {
+    grid-template-columns: 1fr;
+
+    gap: 24px;
+  }
+
+  .featured-container {
+    grid-template-columns: 1fr;
+
+    gap: 70px;
+  }
+
+  .featured-cover {
+    width: min(78%, 390px);
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+
+    justify-items: center;
+
+    text-align: center;
+  }
+
+  .footer-copy {
+    justify-self: center;
+  }
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-text strong {
+    font-size: 0.91rem;
+  }
+
+  .brand-text span {
+    font-size: 0.52rem;
+  }
+
+  .hero-container {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 15vw, 4.5rem);
   }
 
   .hero-description {
-    font-size: 0.94rem;
+    font-size: 0.88rem;
+  }
+
+  .hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hero-actions a {
+    width: 100%;
+  }
+
+  .hero-editorial {
+    min-height: 235px;
+
+    padding: 27px;
+  }
+
+  .editorial-number {
+    font-size: 8rem;
   }
 
   .publications-section,
   .archive-section {
-    padding: 85px 20px;
-  }
-
-  .publication-card {
-    padding: 28px 20px;
+    padding: 80px 0;
   }
 
   .featured-edition {
-    padding: 80px 20px;
+    padding: 80px 0;
   }
 
-  .featured-heading {
-    align-items: start;
+  .section-heading,
+  .archive-heading {
+    margin-bottom: 35px;
   }
 
-  .featured-date {
-    font-size: 0.55rem;
+  .section-heading h2,
+  .archive-heading h2 {
+    font-size: clamp(2.6rem, 13vw, 3.8rem);
   }
 
-  .magazine-preview {
-    width: 92%;
+  .publication-card {
+    min-height: 345px;
+
+    padding: 23px 22px;
+  }
+
+  .publication-card h3 {
+    font-size: 2.6rem;
+  }
+
+  .publication-level {
+    max-width: 160px;
+
+    text-align: right;
+  }
+
+  .featured-cover {
+    width: min(88%, 360px);
+  }
+
+  .featured-content h2 {
+    font-size: clamp(2.8rem, 13vw, 4rem);
+  }
+
+  .edition-contents {
+    grid-template-columns: 1fr;
   }
 
   .featured-actions {
+    align-items: stretch;
     flex-direction: column;
   }
 
-  .read-button,
-  .download-button {
-    justify-content: center;
+  .featured-actions a {
+    width: 100%;
+  }
+
+  .archive-card {
+    grid-template-columns: 1fr;
+  }
+
+  .archive-cover {
+    min-height: 390px;
+  }
+
+  .archive-cover img {
+    max-height: 335px;
+  }
+
+  .archive-info {
+    padding: 28px;
   }
 
   .archive-placeholder {
-    grid-template-columns: 1fr;
+    min-height: 300px;
+
+    padding: 35px 25px;
   }
 
-  .archive-line {
-    display: none;
+  .footer-publications {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
   }
 
-  .footer-main {
-    padding: 60px 20px;
-    grid-template-columns: 1fr;
-    gap: 45px;
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================================
+   AJUSTE HERO · PORTADA REAL
+========================================================= */
+
+.hero {
+  min-height: 590px;
+}
+
+.hero-container {
+  padding-top: 52px;
+  padding-bottom: 52px;
+}
+
+
+/* =========================================================
+   REVISTA DESTACADA EN HERO
+========================================================= */
+
+.hero-magazine {
+  position: relative;
+
+  min-height: 430px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-magazine::before {
+  content: "";
+
+  position: absolute;
+
+  width: 76%;
+  height: 46px;
+
+  left: 50%;
+  bottom: 54px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.22);
+
+  filter: blur(24px);
+
+  opacity: 0.7;
+}
+
+.hero-magazine-cover {
+  position: relative;
+  z-index: 3;
+
+  width: min(285px, 78%);
+
+  display: block;
+
+  background: white;
+
+  transform:
+    rotate(2.2deg)
+    translateY(0);
+
+  transform-origin: center;
+
+  box-shadow:
+    0 8px 14px rgba(0, 0, 0, 0.08),
+    0 25px 55px rgba(0, 0, 0, 0.19);
+
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.hero-magazine-cover::before,
+.hero-magazine-cover::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -1;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.hero-magazine-cover::before {
+  transform:
+    translate(7px, 5px)
+    rotate(1deg);
+}
+
+.hero-magazine-cover::after {
+  transform:
+    translate(13px, 10px)
+    rotate(1.6deg);
+
+  opacity: 0.72;
+}
+
+.hero-magazine-cover img {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  height: auto;
+
+  display: block;
+
+  background: white;
+}
+
+.hero-magazine-cover:hover {
+  transform:
+    rotate(0deg)
+    translateY(-9px)
+    scale(1.025);
+
+  box-shadow:
+    0 10px 18px rgba(0, 0, 0, 0.08),
+    0 38px 70px rgba(0, 0, 0, 0.24);
+}
+
+
+/* =========================================================
+   DATOS BAJO LA REVISTA
+========================================================= */
+
+.hero-magazine-info {
+  position: relative;
+  z-index: 4;
+
+  margin-top: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+.hero-magazine-info > span {
+  color: var(--green);
+
+  font-size: 0.56rem;
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.hero-magazine-info strong {
+  margin-top: 5px;
+
+  font-family:
+    "Libre Caslon Display",
+    Georgia,
+    serif;
+
+  font-size: 1.08rem;
+  font-weight: 400;
+}
+
+.hero-magazine-info small {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 0.57rem;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .hero-magazine {
+    min-height: 390px;
   }
 
-  .footer-brand {
-    grid-column: auto;
+  .hero-magazine-cover {
+    width: min(255px, 82%);
+  }
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .hero {
+    min-height: auto;
   }
 
-  .footer-bottom {
-    padding: 20px;
-    flex-direction: column;
-    gap: 7px;
+  .hero-container {
+    padding-top: 58px;
+    padding-bottom: 62px;
+  }
+
+  .hero-magazine {
+    min-height: auto;
+
+    padding: 5px 0 10px;
+  }
+
+  .hero-magazine-cover {
+    width: min(275px, 72vw);
+  }
+
+  .hero-magazine::before {
+    width: 210px;
+
+    bottom: 43px;
+  }
+}
+
+
+/* =========================================================
+   CELULAR PEQUEÑO
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .hero-magazine-cover {
+    width: min(250px, 74vw);
+  }
+
+  .hero-magazine-info {
+    margin-top: 22px;
+  }
+}
+
+/* =========================================================
+   AJUSTE FINO FINAL · HERO
+========================================================= */
+
+@media (min-width: 1001px) {
+
+  /* Un poco más de presencia para la portada */
+  .hero-magazine-cover {
+    width: min(315px, 84%);
+  }
+
+  /* Acerca visualmente la revista al contenido */
+  .hero-magazine {
+    transform: translateX(-32px);
+  }
+
+  /* Compensa el movimiento para que el texto inferior
+     permanezca integrado con la portada */
+  .hero-magazine-info {
+    transform: translateX(0);
+  }
+
+  /* Reduce ligeramente el espacio vertical del hero */
+  .hero-container {
+    padding-top: 44px;
+    padding-bottom: 44px;
   }
 }

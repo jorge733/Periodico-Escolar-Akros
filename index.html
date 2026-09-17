@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
 
@@ -10,13 +11,19 @@
 
   <meta
     name="description"
-    content="Periódico Escolar Digital del Colegio Akros. El Desayunito, El Desayuno y English Edition."
+    content="Periódico Escolar Digital del Colegio Akros. El Desayunito, El Desayuno y El Desayuno English Edition."
   >
 
-  <title>Periódico Escolar Digital | Colegio Akros</title>
+  <title>
+    Periódico Escolar Digital | Colegio Akros
+  </title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 </head>
+
 
 <body>
 
@@ -26,44 +33,88 @@
 
   <header class="site-header">
 
-    <div class="header-inner">
+    <div class="header-container">
 
-      <a href="index.html" class="brand" aria-label="Inicio">
-        <div class="brand-mark">
-          AKROS
+      <a
+        href="#inicio"
+        class="brand"
+        aria-label="Periódico Escolar Digital Colegio Akros"
+      >
+
+        <div class="brand-logo">
+
+          <img
+            src="assets/logo-akros.png"
+            alt="Colegio Akros"
+          >
+
         </div>
+
 
         <div class="brand-text">
-          <span class="brand-school">Colegio Akros</span>
-          <span class="brand-project">Periódico Escolar Digital</span>
+
+          <strong>
+            Periódico Escolar
+          </strong>
+
+          <span>
+            Colegio Akros
+          </span>
+
         </div>
+
       </a>
+
 
       <button
         class="menu-button"
         id="menuButton"
+        type="button"
         aria-label="Abrir menú"
         aria-expanded="false"
       >
+
         <span></span>
         <span></span>
         <span></span>
+
       </button>
 
-      <nav class="main-nav" id="mainNav">
-        <a href="#inicio">Inicio</a>
-        <a href="#publicaciones">Publicaciones</a>
-        <a href="#ultima-edicion">Última edición</a>
-        <a href="#archivo">Archivo</a>
+
+      <nav
+        class="main-nav"
+        id="mainNav"
+      >
 
         <a
-          href="https://www.colegioakros.cl/"
+          href="#inicio"
+          class="active"
+        >
+          Inicio
+        </a>
+
+        <a href="#publicaciones">
+          Publicaciones
+        </a>
+
+        <a href="#ultima-edicion">
+          Última edición
+        </a>
+
+        <a href="#archivo">
+          Archivo
+        </a>
+
+        <a
+          href="https://www.colegioakros.com"
           target="_blank"
           rel="noopener noreferrer"
-          class="nav-school"
+          class="school-link"
         >
-          Colegio Akros ↗
+          Colegio Akros
+          <span>↗</span>
         </a>
+
       </nav>
 
     </div>
@@ -71,336 +122,519 @@
   </header>
 
 
+
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
   <main>
 
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
+    <section
+      class="hero"
+      id="inicio"
+    >
 
-    <section class="hero" id="inicio">
-
-      <div class="hero-decoration hero-decoration-left"></div>
-      <div class="hero-decoration hero-decoration-right"></div>
-
-      <div class="hero-content">
-
-        <p class="eyebrow">
-          Área de Formación · Colegio Akros
-        </p>
-
-        <h1>
-          Nuestro colegio.<br>
-          <em>Nuestras historias.</em>
-        </h1>
-
-        <p class="hero-description">
-          Un espacio creado para compartir las voces, ideas,
-          intereses y experiencias de nuestros estudiantes.
-        </p>
-
-        <a href="#publicaciones" class="primary-button">
-          Explorar publicaciones
-          <span>↓</span>
-        </a>
-
-      </div>
-
-      <div class="hero-label">
-        PERIÓDICO<br>
-        ESCOLAR<br>
-        DIGITAL
-      </div>
-
-    </section>
+      <div class="hero-decoration hero-decoration-one"></div>
+      <div class="hero-decoration hero-decoration-two"></div>
 
 
-    <!-- =====================================================
-         TRES PUBLICACIONES
-    ====================================================== -->
+      <div class="hero-container">
 
-    <section class="publications-section" id="publicaciones">
+        <div class="hero-content">
 
-      <div class="section-heading">
-
-        <p class="section-kicker">
-          Nuestras publicaciones
-        </p>
-
-        <h2>
-          Tres periódicos.<br>
-          <span>Una comunidad.</span>
-        </h2>
-
-        <p>
-          Historias creadas para las distintas etapas
-          de nuestra comunidad escolar.
-        </p>
-
-      </div>
+          <span class="eyebrow">
+            PERIÓDICO ESCOLAR DIGITAL
+          </span>
 
 
-      <div class="publication-grid">
-
-        <!-- DESAYUNITO -->
-
-        <article class="publication-card desayunito-card">
-
-          <div class="publication-number">
-            01
-          </div>
-
-          <div class="publication-card-content">
-
-            <span class="publication-audience">
-              Kinder — 4° básico
-            </span>
-
-            <h3>El Desayunito</h3>
-
-            <p>
-              Noticias, actividades, descubrimientos y
-              experiencias de nuestros estudiantes más pequeños.
-            </p>
-
-            <span class="publication-status">
-              Próximamente
-            </span>
-
-          </div>
-
-        </article>
+          <h1>
+            Nuestro colegio.<br>
+            <em>Nuestras historias.</em>
+          </h1>
 
 
-        <!-- EL DESAYUNO -->
+          <p class="hero-description">
+            Un espacio para descubrir, compartir y dar voz
+            a las historias que forman parte de nuestra
+            comunidad Akros.
+          </p>
 
-        <article class="publication-card desayuno-card">
 
-          <div class="publication-number">
-            02
-          </div>
+          <div class="hero-actions">
 
-          <div class="publication-card-content">
-
-            <span class="publication-audience">
-              5° básico — IV° medio
-            </span>
-
-            <h3>El Desayuno</h3>
-
-            <p>
-              Entrevistas, opinión, actualidad, cultura,
-              recomendaciones y las voces de nuestros estudiantes.
-            </p>
-
-            <a href="#ultima-edicion" class="publication-link">
-              Ver publicaciones
+            <a
+              href="revista.html?publicacion=desayuno&edicion=25"
+              class="primary-button"
+            >
+              Leer última edición
               <span>→</span>
+            </a>
+
+
+            <a
+              href="#publicaciones"
+              class="secondary-button"
+            >
+              Conocer publicaciones
             </a>
 
           </div>
 
-        </article>
+        </div>
 
 
-        <!-- ENGLISH -->
+      <div class="hero-magazine">
 
-        <article class="publication-card english-card">
+  <a
+    href="revista.html?publicacion=desayuno&edicion=25"
+    class="hero-magazine-cover"
+    aria-label="Leer El Desayuno edición número 25"
+  >
 
-          <div class="publication-number">
-            03
+    <img
+      src="assets/ediciones/desayuno/25/pagina-01.webp"
+      alt="Portada de El Desayuno edición número 25"
+    >
+
+  </a>
+
+
+  <div class="hero-magazine-info">
+
+    <span>
+      ÚLTIMA EDICIÓN
+    </span>
+
+    <strong>
+      El Desayuno · N.º 25
+    </strong>
+
+    <small>
+      Septiembre 2026 · Clic para leer
+    </small>
+
+  </div>
+
+</div>
+
           </div>
 
-          <div class="publication-card-content">
-
-            <span class="publication-audience">
-              English Edition
-            </span>
-
-            <h3>
-              El Desayuno
-              <small>in English</small>
-            </h3>
-
-            <p>
-              Stories, interviews and ideas from the Akros
-              community, written and shared in English.
-            </p>
-
-            <span class="publication-status">
-              Próximamente
-            </span>
-
-          </div>
-
-        </article>
+        </div>
 
       </div>
 
     </section>
 
 
+
     <!-- =====================================================
-         EDICIÓN DESTACADA
+         PUBLICACIONES
     ====================================================== -->
 
-    <section class="featured-edition" id="ultima-edicion">
+    <section
+      class="publications-section"
+      id="publicaciones"
+    >
 
-      <div class="featured-heading">
+      <div class="section-container">
 
-        <div>
-          <p class="section-kicker">
-            Ahora en El Desayuno
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              TRES PUBLICACIONES
+            </span>
+
+            <h2>
+              Una comunidad,
+              <em>distintas voces.</em>
+            </h2>
+
+          </div>
+
+
+          <p>
+            Nuestro periódico escolar reúne publicaciones
+            pensadas para distintas etapas, intereses y
+            formas de expresión dentro de la comunidad Akros.
           </p>
 
-          <h2>
-            Edición N.º 25
-          </h2>
         </div>
 
-        <div class="featured-date">
-          SEPTIEMBRE<br>
-          2026
+
+
+        <div class="publication-grid">
+
+          <!-- ===============================================
+               EL DESAYUNITO
+          ================================================ -->
+
+          <article class="publication-card desayunito-card">
+
+            <div class="publication-card-top">
+
+              <span class="publication-number">
+                01
+              </span>
+
+              <span class="publication-level">
+                KINDER — 4° BÁSICO
+              </span>
+
+            </div>
+
+
+            <div class="publication-card-content">
+
+              <span class="publication-label">
+                PUBLICACIÓN
+              </span>
+
+              <h3>
+                El
+                <strong>Desayunito</strong>
+              </h3>
+
+              <p>
+                Historias, aprendizajes y experiencias
+                de nuestros estudiantes más pequeños.
+              </p>
+
+            </div>
+
+
+            <div class="publication-card-footer">
+
+              <span>
+                Próximamente
+              </span>
+
+              <span class="card-arrow">
+                →
+              </span>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- ===============================================
+               EL DESAYUNO
+          ================================================ -->
+
+          <article class="publication-card desayuno-card">
+
+            <div class="publication-card-top">
+
+              <span class="publication-number">
+                02
+              </span>
+
+              <span class="publication-level">
+                5° BÁSICO — IV° MEDIO
+              </span>
+
+            </div>
+
+
+            <div class="publication-card-content">
+
+              <span class="publication-label">
+                PUBLICACIÓN
+              </span>
+
+              <h3>
+                El
+                <strong>Desayuno</strong>
+              </h3>
+
+              <p>
+                Entrevistas, protagonistas, opinión,
+                cultura y temas que conectan con
+                nuestros estudiantes.
+              </p>
+
+            </div>
+
+
+            <div class="publication-card-footer">
+
+              <a
+                href="revista.html?publicacion=desayuno&edicion=25"
+              >
+                Leer edición 25
+              </a>
+
+              <span class="card-arrow">
+                →
+              </span>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- ===============================================
+               ENGLISH EDITION
+          ================================================ -->
+
+          <article class="publication-card english-card">
+
+            <div class="publication-card-top">
+
+              <span class="publication-number">
+                03
+              </span>
+
+              <span class="publication-level">
+                ENGLISH EDITION
+              </span>
+
+            </div>
+
+
+            <div class="publication-card-content">
+
+              <span class="publication-label">
+                PUBLICATION
+              </span>
+
+              <h3>
+                El Desayuno
+                <strong>English Edition</strong>
+              </h3>
+
+              <p>
+                Stories, ideas and voices from our
+                school community, shared in English.
+              </p>
+
+            </div>
+
+
+            <div class="publication-card-footer">
+
+              <span>
+                Coming soon
+              </span>
+
+              <span class="card-arrow">
+                →
+              </span>
+
+            </div>
+
+          </article>
+
         </div>
 
       </div>
 
+    </section>
 
-      <div class="featured-layout">
 
-        <!-- PORTADA -->
 
-        <div class="magazine-preview">
+    <!-- =====================================================
+         ÚLTIMA EDICIÓN
+    ====================================================== -->
 
-          <div class="magazine-shadow"></div>
+    <section
+      class="featured-edition"
+      id="ultima-edicion"
+    >
 
-          <div class="magazine-cover">
+      <div class="section-container featured-container">
 
-            <!--
-              Más adelante reemplazaremos este contenido
-              por la imagen real de la portada.
-            -->
 
-            <div class="cover-placeholder">
+        <!-- PORTADA REAL -->
 
-              <span class="cover-top">
-                ÁREA DE FORMACIÓN · SEPTIEMBRE 2026
-              </span>
+        <div class="featured-cover-area">
 
-              <h3>El Desayuno</h3>
+          <div class="featured-cover-shadow"></div>
 
-              <div class="cover-image-placeholder">
-                <span>EDICIÓN N.º 25</span>
-              </div>
 
-              <strong>
-                Nuestros periodistas<br>
-                entrevistaron al Director.
-              </strong>
+          <a
+            href="revista.html?publicacion=desayuno&edicion=25"
+            class="featured-cover"
+            aria-label="Leer El Desayuno edición número 25"
+          >
 
-            </div>
+            <img
+              src="assets/ediciones/desayuno/25/pagina-01.webp"
+              alt="Portada El Desayuno, edición número 25"
+            >
 
-          </div>
+          </a>
+
+
+          <span class="cover-caption">
+            EL DESAYUNO · N.º 25
+          </span>
 
         </div>
+
 
 
         <!-- INFORMACIÓN -->
 
         <div class="featured-content">
 
-          <span class="featured-tag">
-            NUEVA EDICIÓN
+          <span class="section-kicker">
+            ÚLTIMA EDICIÓN
           </span>
 
-          <h3>
-            Conoce nuestra<br>
-            edición N.º 25.
-          </h3>
 
-          <p class="featured-intro">
-            Una nueva edición de El Desayuno creada por
-            estudiantes de nuestra comunidad.
+          <div class="edition-meta">
+
+            <span>
+              EL DESAYUNO
+            </span>
+
+            <span class="meta-dot"></span>
+
+            <span>
+              N.º 25
+            </span>
+
+            <span class="meta-dot"></span>
+
+            <span>
+              SEPTIEMBRE 2026
+            </span>
+
+          </div>
+
+
+          <h2>
+            Una nueva edición
+            para <em>conectarnos.</em>
+          </h2>
+
+
+          <p class="featured-description">
+            Ya está disponible la edición N.º 25 de
+            El Desayuno, con nuevas conversaciones,
+            protagonistas, recomendaciones y temas
+            para descubrir.
           </p>
 
 
-          <div class="edition-topics">
 
-            <div class="topic">
-              <span>01</span>
+          <!-- ===============================================
+               CONTENIDOS DE LA EDICIÓN
+          ================================================ -->
+
+          <div class="edition-contents">
+
+            <div class="edition-content-item">
+
+              <span>
+                01
+              </span>
 
               <div>
-                <strong>Conociendo en profundidad</strong>
-                <p>Nuestro director, Mr. Javier.</p>
+
+                <strong>
+                  Conociendo en profundidad
+                </strong>
+
+                <p>
+                  Nuestro director, Mr. Javier.
+                </p>
+
               </div>
+
             </div>
 
 
-            <div class="topic">
-              <span>02</span>
+            <div class="edition-content-item">
+
+              <span>
+                02
+              </span>
 
               <div>
-                <strong>Protagonistas</strong>
+
+                <strong>
+                  Protagonistas
+                </strong>
+
                 <p>
                   Los Jefes de Alianzas nos adelantan
                   qué se viene.
                 </p>
+
               </div>
+
             </div>
 
 
-            <div class="topic">
-              <span>03</span>
+            <div class="edition-content-item">
+
+              <span>
+                03
+              </span>
 
               <div>
-                <strong>Dos Miradas</strong>
+
+                <strong>
+                  Dos Miradas
+                </strong>
+
                 <p>
                   ¿Cuál es el impacto de las redes sociales?
                 </p>
+
               </div>
+
             </div>
 
 
-            <div class="topic">
-              <span>04</span>
+            <div class="edition-content-item">
+
+              <span>
+                04
+              </span>
 
               <div>
-                <strong>Did You Know?</strong>
-                <p>¿Conoces el Efecto Reflector?</p>
-              </div>
-            </div>
 
+                <strong>
+                  Did You Know?
+                </strong>
 
-            <div class="topic">
-              <span>05</span>
-
-              <div>
-                <strong>Recomendados</strong>
                 <p>
-                  De Mr. Tomás, Mr. Alexis y El Desayuno.
+                  ¿Conoces el Efecto Reflector?
                 </p>
+
               </div>
+
             </div>
 
           </div>
 
 
+
+          <!-- ===============================================
+               BOTONES
+          ================================================ -->
+
           <div class="featured-actions">
 
             <a
-              href="revista.html?edicion=25"
-              class="read-button"
+              href="revista.html?publicacion=desayuno&edicion=25"
+              class="primary-button"
             >
-              <span class="read-icon">↗</span>
-
-              <span>
-                <small>ABRIR</small>
-                Leer revista
-              </span>
+              Leer revista
+              <span>→</span>
             </a>
 
+
             <a
-              href="ediciones/desayuno/25/el-desayuno-25.pdf"
-              class="download-button"
+              href="assets/ediciones/desayuno/25/el-desayuno-25.pdf"
+              class="text-button"
               download
             >
               Descargar PDF
@@ -416,42 +650,111 @@
     </section>
 
 
+
     <!-- =====================================================
          ARCHIVO
     ====================================================== -->
 
-    <section class="archive-section" id="archivo">
+    <section
+      class="archive-section"
+      id="archivo"
+    >
 
-      <div class="archive-heading">
+      <div class="section-container">
 
-        <div>
-          <p class="section-kicker">
-            Archivo
+        <div class="archive-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              ARCHIVO
+            </span>
+
+            <h2>
+              Todas nuestras
+              <em>ediciones.</em>
+            </h2>
+
+          </div>
+
+
+          <p>
+            Este espacio irá reuniendo las distintas
+            ediciones del Periódico Escolar Digital Akros.
           </p>
 
-          <h2>
-            Todas las ediciones
-          </h2>
         </div>
 
-        <p>
-          Muy pronto podrás recorrer aquí todas las
-          publicaciones de El Desayuno.
-        </p>
-
-      </div>
 
 
-      <div class="archive-placeholder">
+        <div class="archive-grid">
 
-        <span>2026</span>
+          <!-- EDICIÓN 25 -->
 
-        <div class="archive-line"></div>
+          <article class="archive-card">
 
-        <p>
-          Comenzaremos el archivo digital con
-          <strong>El Desayuno · Edición N.º 25</strong>.
-        </p>
+            <a
+              href="revista.html?publicacion=desayuno&edicion=25"
+              class="archive-cover"
+            >
+
+              <img
+                src="assets/ediciones/desayuno/25/pagina-01.webp"
+                alt="El Desayuno edición número 25"
+              >
+
+            </a>
+
+
+            <div class="archive-info">
+
+              <span class="archive-publication">
+                EL DESAYUNO
+              </span>
+
+              <h3>
+                Edición N.º 25
+              </h3>
+
+              <p>
+                Septiembre 2026
+              </p>
+
+
+              <a
+                href="revista.html?publicacion=desayuno&edicion=25"
+                class="archive-read"
+              >
+                Leer edición
+                <span>→</span>
+              </a>
+
+            </div>
+
+          </article>
+
+
+
+          <!-- FUTURAS EDICIONES -->
+
+          <article class="archive-placeholder">
+
+            <span>
+              +
+            </span>
+
+            <strong>
+              Próximas ediciones
+            </strong>
+
+            <p>
+              El archivo crecerá a medida que
+              publiquemos nuevas ediciones.
+            </p>
+
+          </article>
+
+        </div>
 
       </div>
 
@@ -460,73 +763,62 @@
   </main>
 
 
+
   <!-- =====================================================
-       FOOTER
+       FOOTER GENERAL
   ====================================================== -->
 
   <footer class="site-footer">
 
-    <div class="footer-main">
+    <div class="footer-container">
 
       <div class="footer-brand">
 
-        <span class="footer-akros">
-          AKROS
-        </span>
+        <img
+          src="assets/logo-akros.png"
+          alt="Colegio Akros"
+        >
 
-        <h2>
-          Periódico<br>
-          Escolar Digital
-        </h2>
+
+        <div>
+
+          <strong>
+            Periódico Escolar Digital
+          </strong>
+
+          <span>
+            Colegio Akros
+          </span>
+
+        </div>
 
       </div>
 
 
       <div class="footer-publications">
 
-        <p>PUBLICACIONES</p>
-
-        <a href="#publicaciones">
-          El Desayunito
-        </a>
-
-        <a href="#ultima-edicion">
-          El Desayuno
-        </a>
-
-        <a href="#publicaciones">
-          English Edition
-        </a>
-
-      </div>
-
-
-      <div class="footer-contact">
-
-        <p>PARTICIPA</p>
-
         <span>
-          ¿Tienes una idea para el periódico?
+          El Desayunito
         </span>
 
-        <a href="mailto:eldesayuno@colegioakros.com">
-          eldesayuno@colegioakros.com
-        </a>
+        <span class="footer-dot"></span>
+
+        <span>
+          El Desayuno
+        </span>
+
+        <span class="footer-dot"></span>
+
+        <span>
+          English Edition
+        </span>
 
       </div>
 
-    </div>
 
-
-    <div class="footer-bottom">
-
-      <span>
+      <div class="footer-copy">
         © 2026 Colegio Akros
-      </span>
-
-      <span>
-        Área de Formación
-      </span>
+      </div>
 
     </div>
 
@@ -536,4 +828,5 @@
   <script src="app.js"></script>
 
 </body>
+
 </html>
