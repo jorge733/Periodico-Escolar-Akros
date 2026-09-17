@@ -1,33 +1,37 @@
 /* =========================================================
    PERIÓDICO ESCOLAR DIGITAL · COLEGIO AKROS
-   Lector universal de publicaciones
-
-   Motor: StPageFlip 2.0.7
+   Lector de publicaciones
+   revista.js
 ========================================================= */
 
 "use strict";
 
+
 /* =========================================================
-   PUBLICACIONES DISPONIBLES
+   CONFIGURACIÓN
 ========================================================= */
 
 const PUBLICATIONS = {
-
   desayuno: {
     name: "El Desayuno",
-    folder: "desayuno"
+    folder: "desayuno",
+    date: "Septiembre 2026",
+    totalPages: 7
   },
 
   desayunito: {
     name: "El Desayunito",
-    folder: "desayunito"
+    folder: "desayunito",
+    date: "",
+    totalPages: 1
   },
 
   english: {
     name: "El Desayuno English Edition",
-    folder: "english"
+    folder: "english",
+    date: "",
+    totalPages: 1
   }
-
 };
 
 
@@ -35,64 +39,46 @@ const PUBLICATIONS = {
    LEER URL
 ========================================================= */
 
-const urlParams =
+const params =
   new URLSearchParams(
     window.location.search
   );
 
-const publicationKey =
-  urlParams.get("publicacion") ||
+const requestedPublication =
+  params.get("publicacion") ||
   "desayuno";
 
+const publicationKey =
+  PUBLICATIONS[requestedPublication]
+    ? requestedPublication
+    : "desayuno";
+
 const editionNumber =
-  urlParams.get("edicion") ||
+  params.get("edicion") ||
   "25";
 
 const publication =
-  PUBLICATIONS[publicationKey] ||
-  PUBLICATIONS.desayuno;
-
-
-/* =========================================================
-   CONFIGURACIÓN DE ESTA EDICIÓN
-========================================================= */
+  PUBLICATIONS[publicationKey];
 
 const EDITION = {
-
-  publication:
-    publicationKey,
-
   title:
     publication.name,
+
+  folder:
+    publication.folder,
+
+  date:
+    publication.date,
 
   number:
     editionNumber,
 
-  date:
-    "Septiembre 2026",
-
   totalPages:
-    7,
+    publication.totalPages,
 
   basePath:
     `assets/ediciones/${publication.folder}/${editionNumber}/`
-
 };
-
-
-/* =========================================================
-   PROPORCIÓN ORIGINAL
-========================================================= */
-
-const ORIGINAL_PAGE_WIDTH =
-  1530;
-
-const ORIGINAL_PAGE_HEIGHT =
-  2339;
-
-const PAGE_RATIO =
-  ORIGINAL_PAGE_WIDTH /
-  ORIGINAL_PAGE_HEIGHT;
 
 
 /* =========================================================
@@ -107,9 +93,24 @@ const magazineStage =
     "magazineStage"
   );
 
-const flipbookElement =
+const magazineBook =
   document.getElementById(
-    "flipbook"
+    "magazineBook"
+  );
+
+const mobileMagazine =
+  document.getElementById(
+    "mobileMagazine"
+  );
+
+const mobilePageContainer =
+  document.getElementById(
+    "mobilePageContainer"
+  );
+
+const mobilePageImage =
+  document.getElementById(
+    "mobilePageImage"
   );
 
 const previousButton =
@@ -147,6 +148,21 @@ const pageDots =
     "pageDots"
   );
 
+const publicationTitle =
+  document.getElementById(
+    "publicationTitle"
+  );
+
+const publicationEdition =
+  document.getElementById(
+    "publicationEdition"
+  );
+
+const downloadButton =
+  document.getElementById(
+    "downloadButton"
+  );
+
 const zoomOutButton =
   document.getElementById(
     "zoomOutButton"
@@ -172,24 +188,74 @@ const readerLoader =
     "readerLoader"
   );
 
-const dragHint =
+
+/* =========================================================
+   MODO LECTURA
+========================================================= */
+
+const readingMode =
   document.getElementById(
-    "dragHint"
+    "readingMode"
   );
 
-const zoomOverlay =
+const readingCloseButton =
   document.getElementById(
-    "zoomOverlay"
+    "readingCloseButton"
   );
 
-const zoomCloseButton =
+const readingPublicationTitle =
   document.getElementById(
-    "zoomCloseButton"
+    "readingPublicationTitle"
   );
 
-const zoomImage =
+const readingPageLabel =
   document.getElementById(
-    "zoomImage"
+    "readingPageLabel"
+  );
+
+const readingPageImage =
+  document.getElementById(
+    "readingPageImage"
+  );
+
+const readingPageWrapper =
+  document.getElementById(
+    "readingPageWrapper"
+  );
+
+const readingScroll =
+  document.getElementById(
+    "readingScroll"
+  );
+
+const readingZoomOutButton =
+  document.getElementById(
+    "readingZoomOutButton"
+  );
+
+const readingZoomInButton =
+  document.getElementById(
+    "readingZoomInButton"
+  );
+
+const readingZoomValue =
+  document.getElementById(
+    "readingZoomValue"
+  );
+
+const readingPreviousButton =
+  document.getElementById(
+    "readingPreviousButton"
+  );
+
+const readingNextButton =
+  document.getElementById(
+    "readingNextButton"
+  );
+
+const readingBottomLabel =
+  document.getElementById(
+    "readingBottomLabel"
   );
 
 
@@ -197,47 +263,47 @@ const zoomImage =
    ESTADO
 ========================================================= */
 
-let pageFlip = null;
+let currentPage = 1;
 
-let readerZoom = 1;
+let bookZoom = 1;
 
-let resizeTimer = null;
+let readingZoom = 1;
 
-let hasInteracted = false;
+let readingPage = 1;
 
-let currentLogicalPage = 1;
+let isAnimating = false;
 
-let currentOrientation = "";
+let touchStartX = 0;
+
+let touchStartY = 0;
+
+let touchCurrentX = 0;
 
 
 /* =========================================================
-   RUTA DE PÁGINA
+   UTILIDADES
 ========================================================= */
 
-function getPagePath(
-  pageNumber
-) {
+function isMobile() {
+  return window.matchMedia(
+    "(max-width: 700px)"
+  ).matches;
+}
 
-  const number =
-    String(pageNumber)
-      .padStart(2, "0");
 
+function getPagePath(pageNumber) {
   return (
-    `${EDITION.basePath}` +
-    `pagina-${number}.webp`
+    EDITION.basePath +
+    `pagina-${String(pageNumber).padStart(2, "0")}.webp`
   );
 }
 
 
-/* =========================================================
-   MÓVIL
-========================================================= */
-
-function isMobile() {
-
-  return window.matchMedia(
-    "(max-width: 700px)"
-  ).matches;
+function getPdfPath() {
+  return (
+    EDITION.basePath +
+    `el-${EDITION.folder}-${EDITION.number}.pdf`
+  );
 }
 
 
@@ -245,32 +311,25 @@ function isMobile() {
    PRECARGA
 ========================================================= */
 
-function preloadImages() {
-
-  const jobs = [];
+function preloadPages() {
+  const promises = [];
 
   for (
     let page = 1;
     page <= EDITION.totalPages;
     page++
   ) {
-
-    jobs.push(
-
+    promises.push(
       new Promise(resolve => {
-
-        const image =
-          new Image();
+        const image = new Image();
 
         image.onload =
           () => resolve(true);
 
         image.onerror =
           () => {
-
             console.warn(
-              "No se pudo cargar:",
-              getPagePath(page)
+              `No se pudo cargar ${getPagePath(page)}`
             );
 
             resolve(false);
@@ -278,313 +337,238 @@ function preloadImages() {
 
         image.src =
           getPagePath(page);
-
       })
-
     );
   }
 
-  return Promise.all(jobs);
+  return Promise.all(promises);
 }
 
 
 /* =========================================================
-   CALCULAR TAMAÑO DEL LIBRO
+   INFORMACIÓN DE EDICIÓN
 ========================================================= */
 
-function calculateBookSize() {
+function configureEdition() {
+  document.title =
+    `${EDITION.title} N.º ${EDITION.number} | Colegio Akros`;
 
-  const rect =
-    magazineStage
-      .getBoundingClientRect();
+  publicationTitle.textContent =
+    EDITION.title;
 
-  const mobile =
-    isMobile();
-
-  /*
-    Dejamos aire arriba y abajo.
-  */
-
-  const verticalMargin =
-    mobile
-      ? 24
-      : 34;
-
-  /*
-    Dejamos espacio para
-    las flechas laterales.
-  */
-
-  const horizontalMargin =
-    mobile
-      ? 20
-      : 170;
-
-  const availableHeight =
-    Math.max(
-      320,
-      rect.height -
-      verticalMargin
+  publicationEdition.textContent =
+    `Edición N.º ${EDITION.number}` +
+    (
+      EDITION.date
+        ? ` · ${EDITION.date}`
+        : ""
     );
 
-  const availableWidth =
+  readingPublicationTitle.textContent =
+    EDITION.title;
+
+  totalPagesLabel.textContent =
+    String(EDITION.totalPages);
+
+  downloadButton.href =
+    getPdfPath();
+}
+
+
+/* =========================================================
+   CREAR IMAGEN DE PÁGINA
+========================================================= */
+
+function createPageElement(
+  pageNumber,
+  side = ""
+) {
+  const page =
+    document.createElement("div");
+
+  page.className =
+    "magazine-page";
+
+  if (side) {
+    page.classList.add(
+      `magazine-page-${side}`
+    );
+  }
+
+  page.dataset.page =
+    String(pageNumber);
+
+  const image =
+    document.createElement("img");
+
+  image.src =
+    getPagePath(pageNumber);
+
+  image.alt =
+    `${EDITION.title} · Página ${pageNumber}`;
+
+  image.draggable =
+    false;
+
+  image.decoding =
+    "async";
+
+  page.appendChild(image);
+
+  page.addEventListener(
+    "click",
+    () => {
+      if (!isAnimating) {
+        openReadingMode(
+          pageNumber
+        );
+      }
+    }
+  );
+
+  return page;
+}
+
+
+/* =========================================================
+   SPREAD ACTUAL
+========================================================= */
+
+function getDesktopSpread() {
+  if (currentPage <= 1) {
+    return [1];
+  }
+
+  let leftPage =
+    currentPage;
+
+  if (leftPage % 2 !== 0) {
+    leftPage -= 1;
+  }
+
+  leftPage =
     Math.max(
-      280,
-      rect.width -
-      horizontalMargin
+      2,
+      leftPage
     );
 
-  /*
-    En escritorio calculamos
-    espacio para dos páginas.
-
-    En móvil para una.
-  */
-
-  const pagesAcross =
-    mobile ? 1 : 2;
-
-  /*
-    Primero calculamos usando
-    la altura disponible.
-  */
-
-  let pageHeight =
-    availableHeight;
-
-  let pageWidth =
-    pageHeight *
-    PAGE_RATIO;
-
-  /*
-    Si el libro completo supera
-    el ancho, reducimos.
-  */
+  const result =
+    [leftPage];
 
   if (
-    pageWidth *
-    pagesAcross >
-    availableWidth
+    leftPage + 1 <=
+    EDITION.totalPages
   ) {
-
-    pageWidth =
-      availableWidth /
-      pagesAcross;
-
-    pageHeight =
-      pageWidth /
-      PAGE_RATIO;
+    result.push(
+      leftPage + 1
+    );
   }
 
-  return {
-
-    width:
-      Math.floor(
-        pageWidth
-      ),
-
-    height:
-      Math.floor(
-        pageHeight
-      )
-
-  };
+  return result;
 }
 
 
 /* =========================================================
-   CREAR PÁGINAS HTML
+   RENDER ESCRITORIO
 ========================================================= */
 
-function createHTMLPages() {
-
-  flipbookElement.innerHTML =
+function renderDesktop() {
+  magazineBook.innerHTML =
     "";
 
-  for (
-    let pageNumber = 1;
-    pageNumber <= EDITION.totalPages;
-    pageNumber++
-  ) {
-
-    const page =
-      document.createElement(
-        "div"
-      );
-
-    page.className =
-      "akros-flip-page";
-
-    page.dataset.page =
-      String(pageNumber);
-
-    /*
-      Portada y contraportada
-      se comportan como papel más rígido.
-    */
-
-    if (
-      pageNumber === 1 ||
-      pageNumber ===
-        EDITION.totalPages
-    ) {
-
-      page.setAttribute(
-        "data-density",
-        "hard"
-      );
-    }
-
-    const image =
-      document.createElement(
-        "img"
-      );
-
-    image.src =
-      getPagePath(
-        pageNumber
-      );
-
-    image.alt =
-      `${EDITION.title} · ` +
-      `Página ${pageNumber}`;
-
-    image.draggable =
-      false;
-
-    image.decoding =
-      "async";
-
-    /*
-      El navegador puede conservar
-      la imagen a resolución completa.
-    */
-
-    image.style.width =
-      "100%";
-
-    image.style.height =
-      "100%";
-
-    image.style.objectFit =
-      "cover";
-
-    image.style.display =
-      "block";
-
-    image.style.imageRendering =
-      "auto";
-
-    page.appendChild(
-      image
-    );
-
-    flipbookElement.appendChild(
-      page
-    );
-  }
-}
-
-
-/* =========================================================
-   ESTILOS CRÍTICOS DEL FLIPBOOK
-========================================================= */
-
-function installFlipbookFixes() {
+  const spread =
+    getDesktopSpread();
 
   if (
-    document.getElementById(
-      "akrosFlipbookFixes"
-    )
+    spread.length === 1 &&
+    spread[0] === 1
   ) {
+    magazineBook.className =
+      "magazine-book cover-view";
+
+    magazineBook.appendChild(
+      createPageElement(1)
+    );
+
     return;
   }
 
-  const style =
-    document.createElement(
-      "style"
+  magazineBook.className =
+    "magazine-book spread-view";
+
+  magazineBook.appendChild(
+    createPageElement(
+      spread[0],
+      "left"
+    )
+  );
+
+  if (
+    spread.length > 1
+  ) {
+    magazineBook.appendChild(
+      createPageElement(
+        spread[1],
+        "right"
+      )
     );
+  }
+}
 
-  style.id =
-    "akrosFlipbookFixes";
 
-  style.textContent = `
+/* =========================================================
+   RENDER MÓVIL
+========================================================= */
 
-    /*
-      Evita que el espacio reservado
-      para la página izquierda de la
-      portada aparezca blanco.
-    */
+function renderMobile() {
+  mobilePageImage.src =
+    getPagePath(currentPage);
 
-    .stf__parent,
-    .stf__wrapper,
-    .stf__block {
-      background: transparent !important;
-    }
+  mobilePageImage.alt =
+    `${EDITION.title} · Página ${currentPage}`;
+}
 
-    /*
-      Página HTML real.
-    */
 
-    .akros-flip-page {
-      position: relative;
+/* =========================================================
+   RENDER GENERAL
+========================================================= */
 
-      overflow: hidden;
+function render() {
+  renderDesktop();
+  renderMobile();
+  updateInterface();
+}
 
-      background: #ffffff;
 
-      box-shadow:
-        0 2px 8px
-        rgba(0, 0, 0, 0.12);
+/* =========================================================
+   ETIQUETA ACTUAL
+========================================================= */
 
-      backface-visibility: hidden;
+function getCurrentLabel() {
+  if (isMobile()) {
+    return (
+      currentPage === 1
+        ? "Portada"
+        : `Página ${currentPage}`
+    );
+  }
 
-      -webkit-backface-visibility:
-        hidden;
-    }
+  const spread =
+    getDesktopSpread();
 
-    .akros-flip-page img {
-      display: block;
+  if (
+    spread.length === 1 &&
+    spread[0] === 1
+  ) {
+    return "Portada";
+  }
 
-      width: 100%;
-      height: 100%;
+  if (spread.length === 1) {
+    return `Página ${spread[0]}`;
+  }
 
-      object-fit: cover;
-
-      image-rendering: auto;
-
-      backface-visibility: hidden;
-
-      -webkit-backface-visibility:
-        hidden;
-
-      transform: translateZ(0);
-
-      -webkit-transform:
-        translateZ(0);
-
-      user-select: none;
-
-      -webkit-user-select: none;
-
-      pointer-events: none;
-    }
-
-    /*
-      Evita fondos blancos artificiales
-      del contenedor de StPageFlip.
-    */
-
-    #flipbook,
-    #flipbook > div {
-      background-color:
-        transparent;
-    }
-
-  `;
-
-  document.head.appendChild(
-    style
+  return (
+    `${spread[0]} — ${spread[1]}`
   );
 }
 
@@ -594,7 +578,6 @@ function installFlipbookFixes() {
 ========================================================= */
 
 function createDots() {
-
   pageDots.innerHTML =
     "";
 
@@ -603,7 +586,6 @@ function createDots() {
     page <= EDITION.totalPages;
     page++
   ) {
-
     const dot =
       document.createElement(
         "button"
@@ -628,162 +610,27 @@ function createDots() {
       () => goToPage(page)
     );
 
-    pageDots.appendChild(
-      dot
-    );
+    pageDots.appendChild(dot);
   }
 }
 
-
-/* =========================================================
-   ÍNDICE ACTUAL
-========================================================= */
-
-function getCurrentIndex() {
-
-  if (!pageFlip) {
-    return 0;
-  }
-
-  const index =
-    pageFlip
-      .getCurrentPageIndex();
-
-  if (
-    typeof index !== "number" ||
-    Number.isNaN(index)
-  ) {
-
-    return 0;
-  }
-
-  return index;
-}
-
-
-/* =========================================================
-   PÁGINAS VISIBLES
-========================================================= */
-
-function getVisiblePages() {
-
-  const current =
-    getCurrentIndex() + 1;
-
-  /*
-    Móvil:
-    una página.
-  */
-
-  if (isMobile()) {
-
-    return [
-      Math.min(
-        EDITION.totalPages,
-        Math.max(
-          1,
-          current
-        )
-      )
-    ];
-  }
-
-  /*
-    Portada.
-  */
-
-  if (current <= 1) {
-
-    return [1];
-  }
-
-  /*
-    Interior:
-    2–3
-    4–5
-    6–7
-  */
-
-  let leftPage =
-    current;
-
-  if (
-    leftPage % 2 !== 0
-  ) {
-
-    leftPage -= 1;
-  }
-
-  leftPage =
-    Math.max(
-      2,
-      leftPage
-    );
-
-  const result =
-    [leftPage];
-
-  if (
-    leftPage + 1 <=
-    EDITION.totalPages
-  ) {
-
-    result.push(
-      leftPage + 1
-    );
-  }
-
-  return result;
-}
-
-
-/* =========================================================
-   LABEL
-========================================================= */
-
-function getPageLabel() {
-
-  const pages =
-    getVisiblePages();
-
-  if (
-    pages.length === 1 &&
-    pages[0] === 1
-  ) {
-
-    return "Portada";
-  }
-
-  if (
-    pages.length === 1
-  ) {
-
-    return (
-      `Página ${pages[0]}`
-    );
-  }
-
-  return (
-    `${pages[0]} — ${pages[1]}`
-  );
-}
-
-
-/* =========================================================
-   ACTUALIZAR DOTS
-========================================================= */
 
 function updateDots() {
+  let visiblePages;
 
-  const visible =
-    getVisiblePages();
+  if (isMobile()) {
+    visiblePages =
+      [currentPage];
+  } else {
+    visiblePages =
+      getDesktopSpread();
+  }
 
   pageDots
     .querySelectorAll(
       ".page-dot"
     )
     .forEach(dot => {
-
       const page =
         Number(
           dot.dataset.page
@@ -791,48 +638,9 @@ function updateDots() {
 
       dot.classList.toggle(
         "active",
-        visible.includes(page)
+        visiblePages.includes(page)
       );
-
     });
-}
-
-
-/* =========================================================
-   BOTONES
-========================================================= */
-
-function updateButtons() {
-
-  const visible =
-    getVisiblePages();
-
-  const first =
-    visible[0];
-
-  const last =
-    visible[
-      visible.length - 1
-    ];
-
-  const beginning =
-    first <= 1;
-
-  const end =
-    last >=
-    EDITION.totalPages;
-
-  previousButton.disabled =
-    beginning;
-
-  bottomPreviousButton.disabled =
-    beginning;
-
-  nextButton.disabled =
-    end;
-
-  bottomNextButton.disabled =
-    end;
 }
 
 
@@ -841,240 +649,648 @@ function updateButtons() {
 ========================================================= */
 
 function updateInterface() {
-
   currentPageLabel.textContent =
-    getPageLabel();
-
-  totalPagesLabel.textContent =
-    String(
-      EDITION.totalPages
-    );
+    getCurrentLabel();
 
   updateDots();
 
-  updateButtons();
+  const atStart =
+    currentPage <= 1;
+
+  let atEnd;
+
+  if (isMobile()) {
+    atEnd =
+      currentPage >=
+      EDITION.totalPages;
+  } else {
+    const spread =
+      getDesktopSpread();
+
+    atEnd =
+      spread[
+        spread.length - 1
+      ] >= EDITION.totalPages;
+  }
+
+  previousButton.disabled =
+    atStart;
+
+  bottomPreviousButton.disabled =
+    atStart;
+
+  nextButton.disabled =
+    atEnd;
+
+  bottomNextButton.disabled =
+    atEnd;
 }
 
 
 /* =========================================================
-   PRIMERA INTERACCIÓN
+   ANIMACIÓN ESCRITORIO
 ========================================================= */
 
-function registerInteraction() {
-
-  if (hasInteracted) {
+function animateDesktopChange(
+  direction,
+  callback
+) {
+  if (
+    isAnimating ||
+    isMobile()
+  ) {
+    callback();
     return;
   }
 
-  hasInteracted =
-    true;
+  const pages =
+    magazineBook.querySelectorAll(
+      ".magazine-page"
+    );
 
-  if (dragHint) {
-
-    dragHint.style.opacity =
-      "0";
-
-    dragHint.style.visibility =
-      "hidden";
+  if (!pages.length) {
+    callback();
+    return;
   }
+
+  isAnimating = true;
+
+  let animatedPage;
+
+  if (direction === "next") {
+    animatedPage =
+      pages[
+        pages.length - 1
+      ];
+
+    animatedPage.classList.add(
+      "turning-next"
+    );
+  } else {
+    animatedPage =
+      pages[0];
+
+    animatedPage.classList.add(
+      "turning-prev"
+    );
+  }
+
+  window.setTimeout(
+    () => {
+      callback();
+
+      isAnimating =
+        false;
+    },
+    500
+  );
 }
 
 
 /* =========================================================
-   NAVEGACIÓN
+   ANIMACIÓN MÓVIL
+========================================================= */
+
+function animateMobileChange(
+  direction,
+  callback
+) {
+  if (
+    isAnimating ||
+    !isMobile()
+  ) {
+    callback();
+    return;
+  }
+
+  isAnimating =
+    true;
+
+  const className =
+    direction === "next"
+      ? "slide-left"
+      : "slide-right";
+
+  mobilePageContainer
+    .classList
+    .add(className);
+
+  window.setTimeout(
+    () => {
+      callback();
+
+      mobilePageContainer
+        .classList
+        .remove(className);
+
+      isAnimating =
+        false;
+    },
+    190
+  );
+}
+
+
+/* =========================================================
+   SIGUIENTE
 ========================================================= */
 
 function nextPage() {
-
-  if (!pageFlip) {
+  if (isAnimating) {
     return;
   }
 
-  registerInteraction();
+  if (isMobile()) {
+    if (
+      currentPage >=
+      EDITION.totalPages
+    ) {
+      return;
+    }
 
-  pageFlip.flipNext();
+    animateMobileChange(
+      "next",
+      () => {
+        currentPage += 1;
+        render();
+      }
+    );
+
+    return;
+  }
+
+  const spread =
+    getDesktopSpread();
+
+  const last =
+    spread[
+      spread.length - 1
+    ];
+
+  if (
+    last >=
+    EDITION.totalPages
+  ) {
+    return;
+  }
+
+  animateDesktopChange(
+    "next",
+    () => {
+      if (
+        currentPage === 1
+      ) {
+        currentPage = 2;
+      } else {
+        currentPage += 2;
+      }
+
+      render();
+    }
+  );
 }
 
+
+/* =========================================================
+   ANTERIOR
+========================================================= */
 
 function previousPage() {
-
-  if (!pageFlip) {
+  if (isAnimating) {
     return;
   }
 
-  registerInteraction();
+  if (isMobile()) {
+    if (
+      currentPage <= 1
+    ) {
+      return;
+    }
 
-  pageFlip.flipPrev();
-}
+    animateMobileChange(
+      "previous",
+      () => {
+        currentPage -= 1;
+        render();
+      }
+    );
 
-
-function goToPage(
-  pageNumber
-) {
-
-  if (!pageFlip) {
     return;
   }
 
   if (
-    pageNumber < 1 ||
-    pageNumber >
-      EDITION.totalPages
+    currentPage <= 1
   ) {
-
     return;
   }
 
-  registerInteraction();
+  animateDesktopChange(
+    "previous",
+    () => {
+      if (
+        currentPage <= 2
+      ) {
+        currentPage = 1;
+      } else {
+        currentPage -= 2;
+      }
 
-  pageFlip.flip(
-    pageNumber - 1
+      render();
+    }
   );
 }
 
 
 /* =========================================================
-   ZOOM GENERAL
+   IR A PÁGINA
 ========================================================= */
 
-function applyZoom() {
+function goToPage(pageNumber) {
+  if (
+    pageNumber < 1 ||
+    pageNumber >
+      EDITION.totalPages ||
+    isAnimating
+  ) {
+    return;
+  }
 
-  reader.style.setProperty(
-    "--reader-zoom",
-    readerZoom
+  if (isMobile()) {
+    const direction =
+      pageNumber >
+      currentPage
+        ? "next"
+        : "previous";
+
+    animateMobileChange(
+      direction,
+      () => {
+        currentPage =
+          pageNumber;
+
+        render();
+      }
+    );
+
+    return;
+  }
+
+  let target;
+
+  if (pageNumber === 1) {
+    target = 1;
+  } else {
+    target =
+      pageNumber % 2 === 0
+        ? pageNumber
+        : pageNumber - 1;
+  }
+
+  if (
+    target ===
+    currentPage
+  ) {
+    return;
+  }
+
+  const direction =
+    target > currentPage
+      ? "next"
+      : "previous";
+
+  animateDesktopChange(
+    direction,
+    () => {
+      currentPage =
+        target;
+
+      render();
+    }
   );
+}
+
+
+/* =========================================================
+   ZOOM DEL LIBRO
+========================================================= */
+
+function applyBookZoom() {
+  document.documentElement
+    .style
+    .setProperty(
+      "--book-zoom",
+      bookZoom
+    );
 
   zoomValue.textContent =
     `${Math.round(
-      readerZoom * 100
+      bookZoom * 100
     )}%`;
 }
 
 
-function zoomIn() {
-
-  readerZoom =
+function zoomBookIn() {
+  bookZoom =
     Math.min(
-      1.3,
+      1.25,
       Number(
         (
-          readerZoom + 0.1
-        ).toFixed(1)
+          bookZoom + .05
+        ).toFixed(2)
       )
     );
 
-  applyZoom();
+  applyBookZoom();
 }
 
 
-function zoomOut() {
-
-  readerZoom =
+function zoomBookOut() {
+  bookZoom =
     Math.max(
-      0.7,
+      .75,
       Number(
         (
-          readerZoom - 0.1
-        ).toFixed(1)
+          bookZoom - .05
+        ).toFixed(2)
       )
     );
 
-  applyZoom();
+  applyBookZoom();
 }
 
 
 /* =========================================================
-   AMPLIAR PÁGINA
+   MODO LECTURA
 ========================================================= */
 
-function openZoomPage(
+function openReadingMode(
   pageNumber
 ) {
+  readingPage =
+    pageNumber;
 
-  zoomImage.src =
-    getPagePath(
-      pageNumber
-    );
+  readingZoom =
+    1;
 
-  zoomImage.alt =
-    `${EDITION.title} · ` +
-    `Página ${pageNumber}`;
+  updateReadingMode();
 
-  zoomOverlay.classList.add(
+  readingMode.classList.add(
     "open"
   );
 
-  zoomOverlay.setAttribute(
+  readingMode.setAttribute(
     "aria-hidden",
     "false"
   );
+
+  readingScroll.scrollTop =
+    0;
+
+  readingScroll.scrollLeft =
+    0;
 }
 
 
-function closeZoomPage() {
-
-  zoomOverlay.classList.remove(
+function closeReadingMode() {
+  readingMode.classList.remove(
     "open"
   );
 
-  zoomOverlay.setAttribute(
+  readingMode.setAttribute(
     "aria-hidden",
     "true"
   );
-
-  zoomImage.src =
-    "";
 }
 
 
 /* =========================================================
-   DOBLE CLIC
+   ACTUALIZAR MODO LECTURA
 ========================================================= */
 
-function handleDoubleClick(
-  event
-) {
-
-  if (
-    !pageFlip ||
-    isMobile()
-  ) {
-    return;
-  }
-
-  const visible =
-    getVisiblePages();
-
-  if (
-    visible.length === 1
-  ) {
-
-    openZoomPage(
-      visible[0]
+function updateReadingMode() {
+  readingPageImage.src =
+    getPagePath(
+      readingPage
     );
 
+  readingPageImage.alt =
+    `${EDITION.title} · Página ${readingPage}`;
+
+  readingPageLabel.textContent =
+    readingPage === 1
+      ? "Portada"
+      : `Página ${readingPage}`;
+
+  readingBottomLabel.textContent =
+    `${readingPage === 1 ? "Portada" : `Página ${readingPage}`} de ${EDITION.totalPages}`;
+
+  readingZoomValue.textContent =
+    `${Math.round(
+      readingZoom * 100
+    )}%`;
+
+  document.documentElement
+    .style
+    .setProperty(
+      "--reading-zoom",
+      readingZoom
+    );
+
+  readingPreviousButton.disabled =
+    readingPage <= 1;
+
+  readingNextButton.disabled =
+    readingPage >=
+    EDITION.totalPages;
+}
+
+
+/* =========================================================
+   ZOOM LECTURA
+========================================================= */
+
+function readingZoomIn() {
+  readingZoom =
+    Math.min(
+      2,
+      Number(
+        (
+          readingZoom + .15
+        ).toFixed(2)
+      )
+    );
+
+  updateReadingMode();
+}
+
+
+function readingZoomOut() {
+  readingZoom =
+    Math.max(
+      .65,
+      Number(
+        (
+          readingZoom - .15
+        ).toFixed(2)
+      )
+    );
+
+  updateReadingMode();
+}
+
+
+/* =========================================================
+   CAMBIAR PÁGINA EN LECTURA
+========================================================= */
+
+function readingPrevious() {
+  if (
+    readingPage <= 1
+  ) {
     return;
   }
 
-  const bookRect =
-    flipbookElement
-      .getBoundingClientRect();
+  readingPage -= 1;
 
-  const center =
-    bookRect.left +
-    bookRect.width / 2;
+  updateReadingMode();
 
-  const selected =
-    event.clientX < center
-      ? visible[0]
-      : visible[
-          visible.length - 1
-        ];
+  readingScroll.scrollTop =
+    0;
 
-  openZoomPage(
-    selected
-  );
+  readingScroll.scrollLeft =
+    0;
 }
+
+
+function readingNext() {
+  if (
+    readingPage >=
+    EDITION.totalPages
+  ) {
+    return;
+  }
+
+  readingPage += 1;
+
+  updateReadingMode();
+
+  readingScroll.scrollTop =
+    0;
+
+  readingScroll.scrollLeft =
+    0;
+}
+
+
+/* =========================================================
+   CLIC EN PÁGINA MÓVIL
+========================================================= */
+
+mobilePageImage.addEventListener(
+  "click",
+  () => {
+    if (!isAnimating) {
+      openReadingMode(
+        currentPage
+      );
+    }
+  }
+);
+
+
+/* =========================================================
+   SWIPE MÓVIL
+========================================================= */
+
+mobileMagazine.addEventListener(
+  "touchstart",
+  event => {
+    if (
+      event.touches.length !== 1
+    ) {
+      return;
+    }
+
+    touchStartX =
+      event.touches[0].clientX;
+
+    touchStartY =
+      event.touches[0].clientY;
+
+    touchCurrentX =
+      touchStartX;
+  },
+  {
+    passive: true
+  }
+);
+
+
+mobileMagazine.addEventListener(
+  "touchmove",
+  event => {
+    if (
+      event.touches.length !== 1
+    ) {
+      return;
+    }
+
+    touchCurrentX =
+      event.touches[0].clientX;
+  },
+  {
+    passive: true
+  }
+);
+
+
+mobileMagazine.addEventListener(
+  "touchend",
+  event => {
+    if (
+      !event.changedTouches.length
+    ) {
+      return;
+    }
+
+    const endX =
+      event.changedTouches[0]
+        .clientX;
+
+    const endY =
+      event.changedTouches[0]
+        .clientY;
+
+    const deltaX =
+      endX - touchStartX;
+
+    const deltaY =
+      endY - touchStartY;
+
+    /*
+      Solo interpretamos swipe
+      cuando el movimiento horizontal
+      es claramente mayor al vertical.
+    */
+
+    if (
+      Math.abs(deltaX) < 45 ||
+      Math.abs(deltaX) <=
+        Math.abs(deltaY)
+    ) {
+      return;
+    }
+
+    if (deltaX < 0) {
+      nextPage();
+    } else {
+      previousPage();
+    }
+  },
+  {
+    passive: true
+  }
+);
 
 
 /* =========================================================
@@ -1082,27 +1298,19 @@ function handleDoubleClick(
 ========================================================= */
 
 async function toggleFullscreen() {
-
   try {
-
     if (
       !document.fullscreenElement
     ) {
-
       await reader
         .requestFullscreen();
-
     } else {
-
       await document
         .exitFullscreen();
     }
-
   } catch (error) {
-
     console.warn(
-      "No fue posible cambiar " +
-      "el modo de pantalla completa.",
+      "No se pudo cambiar a pantalla completa.",
       error
     );
   }
@@ -1113,372 +1321,88 @@ async function toggleFullscreen() {
    TECLADO
 ========================================================= */
 
-function handleKeyboard(
-  event
-) {
-
-  if (
-    zoomOverlay
+function handleKeyboard(event) {
+  const readingOpen =
+    readingMode
       .classList
-      .contains("open")
-  ) {
+      .contains("open");
 
+  if (readingOpen) {
     if (
       event.key === "Escape"
     ) {
+      closeReadingMode();
+      return;
+    }
 
-      closeZoomPage();
+    if (
+      event.key ===
+      "ArrowRight"
+    ) {
+      readingNext();
+      return;
+    }
+
+    if (
+      event.key ===
+      "ArrowLeft"
+    ) {
+      readingPrevious();
+      return;
+    }
+
+    if (
+      event.key === "+" ||
+      event.key === "="
+    ) {
+      readingZoomIn();
+      return;
+    }
+
+    if (
+      event.key === "-"
+    ) {
+      readingZoomOut();
+      return;
     }
 
     return;
   }
 
-  switch (event.key) {
-
-    case "ArrowRight":
-
-      event.preventDefault();
-
-      nextPage();
-
-      break;
-
-
-    case "ArrowLeft":
-
-      event.preventDefault();
-
-      previousPage();
-
-      break;
-
-
-    case "+":
-    case "=":
-
-      zoomIn();
-
-      break;
-
-
-    case "-":
-
-      zoomOut();
-
-      break;
-
-
-    case "Escape":
-
-      if (
-        document.fullscreenElement
-      ) {
-
-        document
-          .exitFullscreen();
-      }
-
-      break;
+  if (
+    event.key ===
+    "ArrowRight"
+  ) {
+    nextPage();
+    return;
   }
-}
-
-
-/* =========================================================
-   EVENTO FLIP
-========================================================= */
-
-function handleFlip(
-  event
-) {
 
   if (
-    event &&
-    typeof event.data ===
-      "number"
+    event.key ===
+    "ArrowLeft"
   ) {
-
-    currentLogicalPage =
-      event.data + 1;
+    previousPage();
+    return;
   }
-
-  registerInteraction();
-
-  window.setTimeout(
-    updateInterface,
-    40
-  );
-}
-
-
-/* =========================================================
-   CREAR LECTOR
-========================================================= */
-
-function createPageFlip(
-  startPage = 1
-) {
 
   if (
-    typeof St === "undefined" ||
-    !St.PageFlip
+    event.key === "+" ||
+    event.key === "="
   ) {
-
-    console.error(
-      "StPageFlip no está disponible."
-    );
-
-    return false;
+    zoomBookIn();
+    return;
   }
-
-  /*
-    Destruir lector anterior.
-  */
-
-  if (pageFlip) {
-
-    try {
-
-      pageFlip.destroy();
-
-    } catch (error) {
-
-      console.warn(
-        error
-      );
-    }
-
-    pageFlip =
-      null;
-  }
-
-  /*
-    Crear las páginas HTML
-    de alta definición.
-  */
-
-  createHTMLPages();
-
-  const size =
-    calculateBookSize();
-
-  /*
-    Crear motor.
-  */
-
-  pageFlip =
-    new St.PageFlip(
-      flipbookElement,
-      {
-
-        width:
-          size.width,
-
-        height:
-          size.height,
-
-        /*
-          Nosotros calculamos exactamente
-          el tamaño que cabe.
-        */
-
-        size:
-          "fixed",
-
-        /*
-          MUY IMPORTANTE:
-          primera página = portada.
-        */
-
-        showCover:
-          true,
-
-        /*
-          En teléfono pasa automáticamente
-          a página individual.
-        */
-
-        usePortrait:
-          true,
-
-        autoSize:
-          true,
-
-        /*
-          Física visual.
-        */
-
-        drawShadow:
-          true,
-
-        maxShadowOpacity:
-          0.46,
-
-        flippingTime:
-          900,
-
-        showPageCorners:
-          true,
-
-        useMouseEvents:
-          true,
-
-        swipeDistance:
-          30,
-
-        disableFlipByClick:
-          false,
-
-        mobileScrollSupport:
-          true,
-
-        startPage:
-          Math.max(
-            0,
-            startPage - 1
-          )
-
-      }
-    );
-
-
-  /* =======================================================
-     EVENTOS
-  ======================================================= */
-
-  pageFlip.on(
-    "flip",
-    handleFlip
-  );
-
-
-  pageFlip.on(
-    "changeState",
-    event => {
-
-      if (
-        event &&
-        (
-          event.data ===
-            "user_fold" ||
-          event.data ===
-            "flipping"
-        )
-      ) {
-
-        registerInteraction();
-      }
-
-    }
-  );
-
-
-  pageFlip.on(
-    "changeOrientation",
-    event => {
-
-      if (
-        event &&
-        event.data
-      ) {
-
-        currentOrientation =
-          event.data;
-      }
-
-      window.setTimeout(
-        updateInterface,
-        60
-      );
-
-    }
-  );
-
-
-  /*
-    IMPORTANTE:
-
-    Ya NO usamos loadFromImages().
-
-    Entregamos las páginas HTML reales.
-  */
-
-  const htmlPages =
-    flipbookElement
-      .querySelectorAll(
-        ".akros-flip-page"
-      );
-
-  pageFlip.loadFromHTML(
-    htmlPages
-  );
-
-  currentLogicalPage =
-    startPage;
-
-  return true;
-}
-
-
-/* =========================================================
-   RECONSTRUIR
-========================================================= */
-
-function rebuildReader() {
-
-  let pageToRestore =
-    currentLogicalPage;
-
-  if (pageFlip) {
-
-    pageToRestore =
-      getCurrentIndex() + 1;
-  }
-
-  /*
-    En escritorio regresamos al
-    comienzo correcto del spread.
-  */
 
   if (
-    !isMobile() &&
-    pageToRestore > 1 &&
-    pageToRestore % 2 !== 0
+    event.key === "-"
   ) {
-
-    pageToRestore -= 1;
+    zoomBookOut();
   }
-
-  createPageFlip(
-    pageToRestore
-  );
-
-  window.setTimeout(
-    updateInterface,
-    150
-  );
 }
 
 
 /* =========================================================
-   RESIZE
-========================================================= */
-
-function handleResize() {
-
-  clearTimeout(
-    resizeTimer
-  );
-
-  resizeTimer =
-    window.setTimeout(
-      rebuildReader,
-      300
-    );
-}
-
-
-/* =========================================================
-   EVENTOS DE INTERFAZ
+   EVENTOS
 ========================================================= */
 
 previousButton.addEventListener(
@@ -1503,12 +1427,12 @@ bottomNextButton.addEventListener(
 
 zoomInButton.addEventListener(
   "click",
-  zoomIn
+  zoomBookIn
 );
 
 zoomOutButton.addEventListener(
   "click",
-  zoomOut
+  zoomBookOut
 );
 
 fullscreenButton.addEventListener(
@@ -1516,34 +1440,29 @@ fullscreenButton.addEventListener(
   toggleFullscreen
 );
 
-zoomCloseButton.addEventListener(
+readingCloseButton.addEventListener(
   "click",
-  closeZoomPage
+  closeReadingMode
 );
 
-zoomOverlay.addEventListener(
+readingZoomInButton.addEventListener(
   "click",
-  event => {
-
-    if (
-      event.target ===
-      zoomOverlay
-    ) {
-
-      closeZoomPage();
-    }
-
-  }
+  readingZoomIn
 );
 
-magazineStage.addEventListener(
-  "dblclick",
-  handleDoubleClick
+readingZoomOutButton.addEventListener(
+  "click",
+  readingZoomOut
 );
 
-flipbookElement.addEventListener(
-  "pointerdown",
-  registerInteraction
+readingPreviousButton.addEventListener(
+  "click",
+  readingPrevious
+);
+
+readingNextButton.addEventListener(
+  "click",
+  readingNext
 );
 
 document.addEventListener(
@@ -1551,141 +1470,78 @@ document.addEventListener(
   handleKeyboard
 );
 
+
+/* =========================================================
+   CAMBIO ESCRITORIO ↔ MÓVIL
+========================================================= */
+
+let lastMobileState =
+  isMobile();
+
 window.addEventListener(
   "resize",
-  handleResize
-);
-
-document.addEventListener(
-  "fullscreenchange",
   () => {
+    const newMobileState =
+      isMobile();
 
-    window.setTimeout(
-      rebuildReader,
-      180
-    );
+    if (
+      newMobileState !==
+      lastMobileState
+    ) {
+      lastMobileState =
+        newMobileState;
 
+      /*
+        Conservamos la página actual
+        al cambiar de orientación.
+      */
+
+      if (
+        !newMobileState &&
+        currentPage > 1 &&
+        currentPage % 2 !== 0
+      ) {
+        currentPage -= 1;
+      }
+
+      render();
+    }
   }
 );
 
 
 /* =========================================================
-   ACTUALIZAR TÍTULOS
+   INICIAR
 ========================================================= */
 
-function updateEditionInformation() {
-
-  document.title =
-    `${EDITION.title} N.º ${EDITION.number} | Colegio Akros`;
-
-  const titleElement =
-    document.querySelector(
-      ".reader-title strong"
-    );
-
-  const subtitleElement =
-    document.querySelector(
-      ".reader-title span"
-    );
-
-  if (titleElement) {
-
-    titleElement.textContent =
-      EDITION.title;
-  }
-
-  if (subtitleElement) {
-
-    subtitleElement.textContent =
-      `Edición N.º ${EDITION.number}` +
-      ` · ${EDITION.date}`;
-  }
-}
-
-
-/* =========================================================
-   INICIO
-========================================================= */
-
-async function initializeReader() {
-
-  installFlipbookFixes();
-
-  updateEditionInformation();
-
-  totalPagesLabel.textContent =
-    String(
-      EDITION.totalPages
-    );
+async function initialize() {
+  configureEdition();
 
   createDots();
 
-  applyZoom();
-
-  await preloadImages();
+  applyBookZoom();
 
   /*
-    Dos frames garantizan que el
-    navegador haya calculado el
-    espacio disponible.
+    Mostramos la portada inmediatamente.
   */
 
-  requestAnimationFrame(
-    () => {
+  currentPage = 1;
 
-      requestAnimationFrame(
-        () => {
+  render();
 
-          const created =
-            createPageFlip(1);
+  /*
+    Esperamos que todas las páginas
+    queden disponibles en caché.
+  */
 
-          if (!created) {
+  await preloadPages();
 
-            if (
-              readerLoader
-            ) {
-
-              readerLoader.innerHTML = `
-                <span>
-                  No fue posible abrir
-                  la revista.
-                </span>
-              `;
-            }
-
-            return;
-          }
-
-          window.setTimeout(
-            () => {
-
-              updateInterface();
-
-              if (
-                readerLoader
-              ) {
-
-                readerLoader
-                  .classList
-                  .add(
-                    "hidden"
-                  );
-              }
-
-            },
-            350
-          );
-
-        }
-      );
-
-    }
-  );
+  if (readerLoader) {
+    readerLoader.classList.add(
+      "hidden"
+    );
+  }
 }
 
 
-/* =========================================================
-   ARRANCAR
-========================================================= */
-
-initializeReader();
+initialize();

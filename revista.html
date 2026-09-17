@@ -11,48 +11,60 @@
 
   <meta
     name="description"
-    content="El Desayuno · Edición N.º 25 · Periódico Escolar Digital del Colegio Akros"
+    content="Lector del Periódico Escolar Digital del Colegio Akros"
   >
 
-  <title>El Desayuno N.º 25 | Colegio Akros</title>
+  <title>
+    El Desayuno | Colegio Akros
+  </title>
 
-  <link rel="stylesheet" href="revista.css">
+  <link
+    rel="stylesheet"
+    href="revista.css"
+  >
 </head>
+
 
 <body>
 
-  <main class="reader" id="reader">
+  <main
+    class="reader"
+    id="reader"
+  >
 
-    <!-- =====================================================
-         BARRA SUPERIOR
-    ====================================================== -->
+    <!-- ==================================================
+         CABECERA
+    =================================================== -->
 
     <header class="reader-header">
 
-      <div class="reader-header-left">
+      <div class="header-left">
 
         <a
           href="index.html"
           class="back-button"
           aria-label="Volver al periódico"
-          title="Volver"
+          title="Volver al periódico"
         >
           ←
         </a>
 
-        <div class="reader-brand">
+
+        <div class="publication-brand">
 
           <img
             src="assets/logo-akros.png"
             alt="Colegio Akros"
-            class="reader-logo"
+            class="akros-logo"
           >
 
-          <div class="reader-title">
+          <div class="publication-info">
 
-            <strong>El Desayuno</strong>
+            <strong id="publicationTitle">
+              El Desayuno
+            </strong>
 
-            <span>
+            <span id="publicationEdition">
               Edición N.º 25 · Septiembre 2026
             </span>
 
@@ -63,10 +75,10 @@
       </div>
 
 
-      <div class="reader-header-actions">
+      <div class="header-actions">
 
         <button
-          class="header-action"
+          class="header-button desktop-only"
           id="zoomOutButton"
           type="button"
           aria-label="Alejar"
@@ -75,15 +87,17 @@
           −
         </button>
 
+
         <span
-          class="zoom-value"
+          class="zoom-value desktop-only"
           id="zoomValue"
         >
           100%
         </span>
 
+
         <button
-          class="header-action"
+          class="header-button desktop-only"
           id="zoomInButton"
           type="button"
           aria-label="Acercar"
@@ -92,8 +106,9 @@
           +
         </button>
 
+
         <button
-          class="header-action fullscreen-button"
+          class="header-button"
           id="fullscreenButton"
           type="button"
           aria-label="Pantalla completa"
@@ -102,17 +117,23 @@
           ⛶
         </button>
 
+
         <a
-          class="download-link"
+          class="download-button"
+          id="downloadButton"
           href="assets/ediciones/desayuno/25/el-desayuno-25.pdf"
           download
           title="Descargar PDF"
         >
-          <span class="download-desktop">
+
+          <span class="download-text">
             Descargar
           </span>
 
-          <span>↓</span>
+          <span>
+            ↓
+          </span>
+
         </a>
 
       </div>
@@ -120,166 +141,335 @@
     </header>
 
 
-    <!-- =====================================================
-         ESCENARIO
-    ====================================================== -->
+
+    <!-- ==================================================
+         ESCENARIO PRINCIPAL
+    =================================================== -->
 
     <section
       class="magazine-stage"
       id="magazineStage"
     >
 
-      <div class="stage-glow"></div>
+      <div class="stage-light"></div>
 
-      <!-- FLECHA IZQUIERDA -->
+
+      <!-- ================================================
+           FLECHA IZQUIERDA
+      ================================================= -->
 
       <button
-        class="page-arrow page-arrow-left"
+        class="navigation-arrow navigation-arrow-left"
         id="previousButton"
         type="button"
         aria-label="Página anterior"
         title="Página anterior"
       >
-        <span>‹</span>
+        ‹
       </button>
 
 
-      <!-- ===================================================
-           LIBRO
 
-           StPageFlip generará aquí la revista.
-      ==================================================== -->
+      <!-- ================================================
+           ESCRITORIO · REVISTA
+      ================================================= -->
 
       <div
-        class="flipbook-wrapper"
-        id="flipbookWrapper"
+        class="desktop-magazine"
+        id="desktopMagazine"
       >
 
         <div
-          class="flipbook"
-          id="flipbook"
-          aria-label="El Desayuno, edición número 25"
-        ></div>
+          class="magazine-book"
+          id="magazineBook"
+        >
+
+          <!--
+            JS construirá aquí:
+
+            PORTADA:
+            una página centrada
+
+            INTERIOR:
+            página izquierda + página derecha
+          -->
+
+        </div>
 
       </div>
 
 
-      <!-- FLECHA DERECHA -->
+
+      <!-- ================================================
+           MÓVIL · UNA PÁGINA
+      ================================================= -->
+
+      <div
+        class="mobile-magazine"
+        id="mobileMagazine"
+      >
+
+        <div
+          class="mobile-page-container"
+          id="mobilePageContainer"
+        >
+
+          <img
+            id="mobilePageImage"
+            src=""
+            alt="Página de la revista"
+            draggable="false"
+          >
+
+        </div>
+
+        <div
+          class="swipe-indicator"
+          aria-hidden="true"
+        >
+          <span>←</span>
+          <span>Desliza para hojear</span>
+          <span>→</span>
+        </div>
+
+      </div>
+
+
+
+      <!-- ================================================
+           FLECHA DERECHA
+      ================================================= -->
 
       <button
-        class="page-arrow page-arrow-right"
+        class="navigation-arrow navigation-arrow-right"
         id="nextButton"
         type="button"
         aria-label="Página siguiente"
         title="Página siguiente"
       >
-        <span>›</span>
+        ›
       </button>
+
 
     </section>
 
 
-    <!-- =====================================================
+
+    <!-- ==================================================
          BARRA INFERIOR
-    ====================================================== -->
+    =================================================== -->
 
-    <footer class="reader-controls">
+    <footer class="reader-footer">
 
-      <div class="reader-controls-inner">
+      <div class="footer-left">
 
-        <!-- INFORMACIÓN -->
+        <strong id="currentPageLabel">
+          Portada
+        </strong>
 
-        <div class="page-information">
+        <span class="footer-separator">
+          /
+        </span>
 
-          <span id="currentPageLabel">
-            Portada
-          </span>
+        <span id="totalPagesLabel">
+          7
+        </span>
 
-          <span class="page-separator">
-            /
-          </span>
-
-          <span id="totalPagesLabel">
-            7
-          </span>
-
-        </div>
+      </div>
 
 
-        <!-- NAVEGACIÓN -->
+      <div class="footer-center">
 
-        <div class="bottom-navigation">
-
-          <button
-            class="bottom-button"
-            id="bottomPreviousButton"
-            type="button"
-            aria-label="Página anterior"
-          >
-            ←
-          </button>
-
-          <div
-            class="page-dots"
-            id="pageDots"
-          ></div>
-
-          <button
-            class="bottom-button"
-            id="bottomNextButton"
-            type="button"
-            aria-label="Página siguiente"
-          >
-            →
-          </button>
-
-        </div>
+        <button
+          class="footer-arrow"
+          id="bottomPreviousButton"
+          type="button"
+          aria-label="Página anterior"
+        >
+          ←
+        </button>
 
 
-        <!-- AYUDA -->
+        <div
+          class="page-dots"
+          id="pageDots"
+        ></div>
 
-        <div class="reader-help">
 
-          <span class="desktop-help">
-            Arrastra una esquina o usa ← →
-          </span>
+        <button
+          class="footer-arrow"
+          id="bottomNextButton"
+          type="button"
+          aria-label="Página siguiente"
+        >
+          →
+        </button>
 
-          <span class="mobile-help">
-            Desliza para hojear
-          </span>
+      </div>
 
-        </div>
+
+      <div class="footer-help">
+
+        <span class="desktop-help">
+          Clic en una página para leer
+        </span>
+
+        <span class="mobile-help">
+          Toca para ampliar
+        </span>
 
       </div>
 
     </footer>
 
 
-    <!-- =====================================================
-         INDICACIÓN INICIAL
-    ====================================================== -->
 
-    <div
-      class="drag-hint"
-      id="dragHint"
+    <!-- ==================================================
+         MODO LECTURA
+    =================================================== -->
+
+    <section
+      class="reading-mode"
+      id="readingMode"
       aria-hidden="true"
     >
 
-      <span class="drag-hint-icon">
-        ↙
-      </span>
+      <!-- ================================================
+           CABECERA MODO LECTURA
+      ================================================= -->
 
-      <div>
-        <strong>HOJEA LA REVISTA</strong>
-        <span>Arrastra una esquina</span>
+      <header class="reading-header">
+
+        <div class="reading-header-left">
+
+          <button
+            class="reading-close"
+            id="readingCloseButton"
+            type="button"
+            aria-label="Volver a la revista"
+          >
+            ←
+          </button>
+
+
+          <div class="reading-title">
+
+            <strong id="readingPublicationTitle">
+              El Desayuno
+            </strong>
+
+            <span id="readingPageLabel">
+              Página 2
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="reading-tools">
+
+          <button
+            class="reading-tool"
+            id="readingZoomOutButton"
+            type="button"
+            aria-label="Alejar página"
+            title="Alejar"
+          >
+            −
+          </button>
+
+
+          <span
+            class="reading-zoom-value"
+            id="readingZoomValue"
+          >
+            100%
+          </span>
+
+
+          <button
+            class="reading-tool"
+            id="readingZoomInButton"
+            type="button"
+            aria-label="Acercar página"
+            title="Acercar"
+          >
+            +
+          </button>
+
+        </div>
+
+      </header>
+
+
+
+      <!-- ================================================
+           ÁREA DE LECTURA
+      ================================================= -->
+
+      <div
+        class="reading-scroll"
+        id="readingScroll"
+      >
+
+        <div
+          class="reading-page-wrapper"
+          id="readingPageWrapper"
+        >
+
+          <img
+            id="readingPageImage"
+            src=""
+            alt="Página ampliada de la revista"
+            draggable="false"
+          >
+
+        </div>
+
       </div>
 
-    </div>
 
 
-    <!-- =====================================================
-         LOADER
-    ====================================================== -->
+      <!-- ================================================
+           NAVEGACIÓN EN MODO LECTURA
+      ================================================= -->
+
+      <button
+        class="reading-navigation reading-navigation-left"
+        id="readingPreviousButton"
+        type="button"
+        aria-label="Página anterior"
+      >
+        ‹
+      </button>
+
+
+      <button
+        class="reading-navigation reading-navigation-right"
+        id="readingNextButton"
+        type="button"
+        aria-label="Página siguiente"
+      >
+        ›
+      </button>
+
+
+      <div class="reading-bottom-info">
+
+        <span id="readingBottomLabel">
+          Página 2 de 7
+        </span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         CARGANDO
+    =================================================== -->
 
     <div
       class="reader-loader"
@@ -296,60 +486,19 @@
       </div>
 
       <span>
-        Abriendo El Desayuno...
+        Abriendo publicación...
       </span>
 
     </div>
 
 
-    <!-- =====================================================
-         AMPLIACIÓN DE PÁGINA
-    ====================================================== -->
-
-    <div
-      class="zoom-overlay"
-      id="zoomOverlay"
-      aria-hidden="true"
-    >
-
-      <button
-        class="zoom-close"
-        id="zoomCloseButton"
-        type="button"
-        aria-label="Cerrar ampliación"
-      >
-        ×
-      </button>
-
-      <div class="zoom-scroll">
-
-        <img
-          id="zoomImage"
-          src=""
-          alt="Página ampliada de El Desayuno"
-        >
-
-      </div>
-
-    </div>
-
   </main>
 
 
-  <!-- =====================================================
-       MOTOR DE PAGE FLIP
-
-       StPageFlip 2.0.7
-  ====================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"
-  ></script>
-
-
-  <!-- =====================================================
-       NUESTRO CONTROLADOR
-  ====================================================== -->
+  <!-- ====================================================
+       IMPORTANTE:
+       YA NO CARGAMOS StPageFlip
+  ===================================================== -->
 
   <script src="revista.js"></script>
 

@@ -1,31 +1,20 @@
-/* =========================================================
-   EL DESAYUNO · LECTOR DIGITAL
-   Colegio Akros
-   revista.css
-========================================================= */
-
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap");
 
 :root {
-  --akros-green: #00864a;
-  --akros-magenta: #c0005b;
+  --green: #078943;
+  --magenta: #c0005b;
+  --bg: #181a18;
+  --panel: #101110;
+  --white: #fff;
+  --muted: rgba(255,255,255,.58);
+  --line: rgba(255,255,255,.12);
 
-  --background: #171817;
-  --header-bg: rgba(14, 15, 14, 0.96);
-  --line: rgba(255, 255, 255, 0.12);
+  --header-height: 72px;
+  --footer-height: 62px;
 
-  --white: #ffffff;
-  --muted: rgba(255, 255, 255, 0.58);
-
-  --header-height: 76px;
-  --footer-height: 70px;
-
-  --reader-zoom: 1;
+  --book-zoom: 1;
+  --reading-zoom: 1;
 }
-
-/* =========================================================
-   RESET
-========================================================= */
 
 * {
   box-sizing: border-box;
@@ -39,42 +28,25 @@ body {
   height: 100%;
 }
 
-html {
-  background: var(--background);
-}
-
 body {
   overflow: hidden;
-
-  font-family: "DM Sans", Arial, sans-serif;
+  background: var(--bg);
   color: var(--white);
-
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      #343734 0%,
-      #242624 38%,
-      #171817 72%
-    );
+  font-family: "DM Sans", Arial, sans-serif;
 }
 
 button,
 a {
+  color: inherit;
   font: inherit;
 }
 
 button {
-  color: inherit;
+  cursor: pointer;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
 }
 
 /* =========================================================
@@ -82,19 +54,24 @@ a {
 ========================================================= */
 
 .reader {
-  position: relative;
-
   width: 100%;
   height: 100dvh;
 
   display: grid;
-
   grid-template-rows:
     var(--header-height)
     minmax(0, 1fr)
     var(--footer-height);
 
   overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      #343834 0%,
+      #232623 42%,
+      #171917 78%
+    );
 }
 
 /* =========================================================
@@ -103,31 +80,28 @@ a {
 
 .reader-header {
   position: relative;
-  z-index: 1000;
-
-  height: var(--header-height);
-
-  padding: 0 26px;
+  z-index: 100;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  background: var(--header-bg);
+  padding: 0 24px;
 
-  border-bottom:
-    1px solid var(--line);
-
-  backdrop-filter: blur(18px);
+  background: rgba(13,14,13,.97);
+  border-bottom: 1px solid var(--line);
 }
 
-.reader-header-left {
-  min-width: 0;
-
+.header-left,
+.publication-brand,
+.header-actions {
   display: flex;
   align-items: center;
+}
 
-  gap: 20px;
+.header-left {
+  gap: 17px;
+  min-width: 0;
 }
 
 .back-button {
@@ -139,172 +113,103 @@ a {
   display: grid;
   place-items: center;
 
-  border:
-    1px solid rgba(255, 255, 255, 0.17);
-
+  border: 1px solid rgba(255,255,255,.16);
   border-radius: 50%;
 
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 
-  transition:
-    background 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease;
+  transition: .18s ease;
 }
 
 .back-button:hover {
-  background:
-    rgba(255, 255, 255, 0.1);
-
-  border-color:
-    rgba(255, 255, 255, 0.4);
-
-  transform:
-    translateX(-2px);
+  background: rgba(255,255,255,.09);
+  transform: translateX(-2px);
 }
 
-/* =========================================================
-   MARCA
-========================================================= */
-
-.reader-brand {
+.publication-brand {
+  gap: 12px;
   min-width: 0;
-
-  display: flex;
-  align-items: center;
-
-  gap: 15px;
 }
 
-.reader-logo {
-  width: 39px;
-  height: 39px;
-
-  object-fit: contain;
+.akros-logo {
+  width: 38px;
+  height: 38px;
 
   padding: 3px;
 
-  background: white;
+  object-fit: contain;
 
+  background: white;
   border-radius: 5px;
 }
 
-.reader-title {
-  min-width: 0;
-
+.publication-info {
   display: flex;
   flex-direction: column;
-
-  gap: 2px;
+  min-width: 0;
 }
 
-.reader-title strong {
-  font-family:
-    "Libre Caslon Display",
-    Georgia,
-    serif;
-
-  font-size: 1.17rem;
+.publication-info strong {
+  font-family: "Libre Caslon Display", Georgia, serif;
+  font-size: 1.08rem;
   font-weight: 400;
 }
 
-.reader-title span {
+.publication-info span {
+  margin-top: 2px;
+
   color: var(--muted);
-
-  font-size: 0.68rem;
-
-  letter-spacing: 0.03em;
+  font-size: .63rem;
 }
 
-/* =========================================================
-   ACCIONES HEADER
-========================================================= */
-
-.reader-header-actions {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
+.header-actions {
+  gap: 7px;
 }
 
-.header-action {
+.header-button {
   width: 38px;
   height: 38px;
 
   display: grid;
   place-items: center;
 
-  border:
-    1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 6px;
 
-  border-radius: 5px;
+  background: rgba(255,255,255,.04);
 
-  background:
-    rgba(255, 255, 255, 0.04);
-
-  cursor: pointer;
-
-  transition:
-    background 180ms ease,
-    border-color 180ms ease;
+  transition: .18s ease;
 }
 
-.header-action:hover {
-  background:
-    rgba(255, 255, 255, 0.11);
-
-  border-color:
-    rgba(255, 255, 255, 0.32);
+.header-button:hover {
+  background: rgba(255,255,255,.11);
 }
 
 .zoom-value {
-  width: 46px;
+  width: 48px;
 
   text-align: center;
 
   color: var(--muted);
-
-  font-size: 0.66rem;
-
-  font-variant-numeric:
-    tabular-nums;
+  font-size: .65rem;
 }
 
-.fullscreen-button {
-  margin-left: 7px;
-}
-
-.download-link {
+.download-button {
   height: 38px;
 
-  margin-left: 5px;
-
+  margin-left: 4px;
   padding: 0 15px;
 
   display: flex;
   align-items: center;
+  gap: 9px;
 
-  gap: 11px;
+  border-radius: 6px;
 
-  border-radius: 5px;
+  background: var(--green);
 
-  background:
-    var(--akros-green);
-
-  font-size: 0.72rem;
+  font-size: .7rem;
   font-weight: 700;
-
-  transition:
-    transform 180ms ease,
-    filter 180ms ease;
-}
-
-.download-link:hover {
-  transform:
-    translateY(-1px);
-
-  filter:
-    brightness(1.12);
 }
 
 /* =========================================================
@@ -323,79 +228,29 @@ a {
   align-items: center;
   justify-content: center;
 
-  padding:
-    20px 88px 22px;
-
-  perspective: 2500px;
+  padding: 8px 76px;
 }
 
-/* Sombra debajo del libro */
-
-.magazine-stage::before {
-  content: "";
-
+.stage-light {
   position: absolute;
-
-  z-index: 0;
-
-  left: 50%;
-  bottom: 5%;
-
-  width:
-    min(74vw, 1050px);
-
-  height: 11%;
-
-  transform:
-    translateX(-50%);
-
-  border-radius: 50%;
-
-  background:
-    rgba(0, 0, 0, 0.62);
-
-  filter:
-    blur(32px);
+  inset: 0;
 
   pointer-events: none;
-}
-
-/* Luz central */
-
-.stage-glow {
-  position: absolute;
-
-  z-index: 0;
-
-  left: 50%;
-  top: 48%;
-
-  width:
-    min(950px, 78vw);
-
-  height:
-    min(670px, 70vh);
-
-  transform:
-    translate(-50%, -50%);
 
   background:
     radial-gradient(
-      ellipse,
-      rgba(255, 255, 255, 0.055),
-      transparent 69%
+      ellipse at center,
+      rgba(255,255,255,.055),
+      transparent 65%
     );
-
-  pointer-events: none;
 }
 
 /* =========================================================
-   CONTENEDOR DE STPAGEFLIP
+   REVISTA ESCRITORIO
 ========================================================= */
 
-.flipbook-wrapper {
+.desktop-magazine {
   position: relative;
-
   z-index: 10;
 
   width: 100%;
@@ -404,71 +259,56 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  transform:
-    scale(var(--reader-zoom));
-
-  transform-origin:
-    center center;
-
-  transition:
-    transform 220ms ease;
 }
 
-/*
-  IMPORTANTE:
-  StPageFlip calcula internamente las dimensiones.
-*/
-
-.flipbook {
+.magazine-book {
   position: relative;
 
-  margin: auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
 
-  cursor: grab;
+  transform: scale(var(--book-zoom));
+  transform-origin: center;
 
-  filter:
-    drop-shadow(
-      0 18px 25px
-      rgba(0, 0, 0, 0.28)
-    );
-}
-
-.flipbook:active {
-  cursor: grabbing;
+  transition:
+    transform .25s ease;
 }
 
 /* =========================================================
-   ELEMENTOS GENERADOS POR STPAGEFLIP
+   PÁGINA
 ========================================================= */
 
-.stf__parent {
-  margin: auto !important;
+.magazine-page {
+  position: relative;
 
-  overflow: visible !important;
-}
+  height: min(
+    calc(
+      100vh -
+      var(--header-height) -
+      var(--footer-height) -
+      22px
+    ),
+    780px
+  );
 
-.stf__wrapper {
-  overflow: visible !important;
-}
+  aspect-ratio: 1530 / 2339;
 
-.stf__block {
-  overflow: visible !important;
-}
+  overflow: hidden;
 
-/*
-  Las páginas son imágenes WebP.
-*/
-
-.stf__item {
-  background: #f5f4ef;
+  background: white;
 
   box-shadow:
-    0 8px 24px
-    rgba(0, 0, 0, 0.22);
+    0 16px 45px rgba(0,0,0,.4);
+
+  cursor: zoom-in;
+
+  user-select: none;
+
+  -webkit-user-select: none;
 }
 
-.stf__item img {
+.magazine-page img {
   display: block;
 
   width: 100%;
@@ -476,125 +316,213 @@ a {
 
   object-fit: cover;
 
-  user-select: none;
+  image-rendering: auto;
 
   -webkit-user-drag: none;
 }
 
 /* =========================================================
-   FLECHAS LATERALES
+   PORTADA
 ========================================================= */
 
-.page-arrow {
-  position: absolute;
+.magazine-book.cover-view {
+  justify-content: center;
+}
 
-  z-index: 80;
+.magazine-book.cover-view .magazine-page {
+  height: min(
+    calc(
+      100vh -
+      var(--header-height) -
+      var(--footer-height) -
+      18px
+    ),
+    810px
+  );
+}
+
+/* =========================================================
+   SPREAD
+========================================================= */
+
+.magazine-book.spread-view {
+  gap: 0;
+}
+
+.magazine-book.spread-view .magazine-page-left {
+  transform-origin: right center;
+}
+
+.magazine-book.spread-view .magazine-page-right {
+  transform-origin: left center;
+}
+
+/* =========================================================
+   LOMO
+========================================================= */
+
+.magazine-book.spread-view::after {
+  content: "";
+
+  position: absolute;
+  z-index: 20;
+
+  top: 0;
+  bottom: 0;
+  left: 50%;
+
+  width: 18px;
+
+  transform: translateX(-50%);
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.17),
+      rgba(0,0,0,.02),
+      rgba(255,255,255,.06),
+      rgba(0,0,0,.03),
+      rgba(0,0,0,.17)
+    );
+}
+
+/* =========================================================
+   ANIMACIÓN
+
+   La página saliente gira como una hoja.
+========================================================= */
+
+.magazine-page.turning-next {
+  z-index: 40;
+
+  animation:
+    pageTurnNext
+    560ms cubic-bezier(.55,.05,.35,1)
+    forwards;
+}
+
+.magazine-page.turning-prev {
+  z-index: 40;
+
+  animation:
+    pageTurnPrevious
+    560ms cubic-bezier(.55,.05,.35,1)
+    forwards;
+}
+
+@keyframes pageTurnNext {
+  0% {
+    transform:
+      perspective(1800px)
+      rotateY(0deg);
+  }
+
+  45% {
+    filter:
+      brightness(.82);
+
+    box-shadow:
+      -20px 12px 45px
+      rgba(0,0,0,.38);
+  }
+
+  100% {
+    transform:
+      perspective(1800px)
+      rotateY(-90deg);
+
+    opacity: .2;
+  }
+}
+
+@keyframes pageTurnPrevious {
+  0% {
+    transform:
+      perspective(1800px)
+      rotateY(0deg);
+  }
+
+  45% {
+    filter:
+      brightness(.84);
+
+    box-shadow:
+      20px 12px 45px
+      rgba(0,0,0,.38);
+  }
+
+  100% {
+    transform:
+      perspective(1800px)
+      rotateY(90deg);
+
+    opacity: .2;
+  }
+}
+
+/* =========================================================
+   FLECHAS
+========================================================= */
+
+.navigation-arrow {
+  position: absolute;
+  z-index: 50;
 
   top: 50%;
 
-  width: 52px;
-  height: 74px;
+  width: 48px;
+  height: 72px;
 
-  transform:
-    translateY(-50%);
+  transform: translateY(-50%);
 
   display: grid;
   place-items: center;
 
-  border:
-    1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 8px;
 
-  border-radius: 7px;
+  background: rgba(10,11,10,.5);
 
-  background:
-    rgba(12, 13, 12, 0.46);
+  font-family: Georgia, serif;
+  font-size: 2.6rem;
 
-  backdrop-filter:
-    blur(12px);
-
-  cursor: pointer;
-
-  transition:
-    background 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease,
-    opacity 180ms ease;
+  transition: .18s ease;
 }
 
-.page-arrow span {
-  position: relative;
-
-  top: -3px;
-
-  font-family:
-    Georgia,
-    serif;
-
-  font-size: 3rem;
-  font-weight: 300;
+.navigation-arrow-left {
+  left: 20px;
 }
 
-.page-arrow-left {
-  left: 25px;
+.navigation-arrow-right {
+  right: 20px;
 }
 
-.page-arrow-right {
-  right: 25px;
+.navigation-arrow:hover:not(:disabled) {
+  background: rgba(255,255,255,.1);
 }
 
-.page-arrow:hover:not(:disabled) {
-  background:
-    rgba(255, 255, 255, 0.11);
-
-  border-color:
-    rgba(255, 255, 255, 0.3);
-}
-
-.page-arrow-left:hover:not(:disabled) {
-  transform:
-    translateY(-50%)
-    translateX(-3px);
-}
-
-.page-arrow-right:hover:not(:disabled) {
-  transform:
-    translateY(-50%)
-    translateX(3px);
-}
-
-.page-arrow:disabled {
-  opacity: 0.18;
-
+.navigation-arrow:disabled {
+  opacity: .15;
   cursor: default;
 }
 
 /* =========================================================
-   BARRA INFERIOR
+   MÓVIL
 ========================================================= */
 
-.reader-controls {
-  position: relative;
-
-  z-index: 1000;
-
-  height:
-    var(--footer-height);
-
-  background:
-    rgba(14, 15, 14, 0.96);
-
-  border-top:
-    1px solid var(--line);
-
-  backdrop-filter:
-    blur(18px);
+.mobile-magazine {
+  display: none;
 }
 
-.reader-controls-inner {
-  width: 100%;
-  height: 100%;
+/* =========================================================
+   FOOTER
+========================================================= */
 
-  padding: 0 27px;
+.reader-footer {
+  position: relative;
+  z-index: 100;
 
   display: grid;
 
@@ -602,87 +530,50 @@ a {
     1fr auto 1fr;
 
   align-items: center;
+
+  padding: 0 24px;
+
+  background: rgba(13,14,13,.97);
+  border-top: 1px solid var(--line);
 }
 
-/* =========================================================
-   INFORMACIÓN PÁGINA
-========================================================= */
-
-.page-information {
-  color:
-    var(--muted);
-
-  font-size: 0.69rem;
-
-  font-variant-numeric:
-    tabular-nums;
+.footer-left {
+  color: var(--muted);
+  font-size: .68rem;
 }
 
-#currentPageLabel {
+.footer-left strong {
   color: white;
-
-  font-weight: 600;
 }
 
-.page-separator {
-  margin:
-    0 7px;
-
-  color:
-    rgba(255, 255, 255, 0.25);
+.footer-separator {
+  margin: 0 7px;
+  color: rgba(255,255,255,.24);
 }
 
-/* =========================================================
-   NAVEGACIÓN INFERIOR
-========================================================= */
-
-.bottom-navigation {
+.footer-center {
   display: flex;
   align-items: center;
-
-  gap: 15px;
+  gap: 13px;
 }
 
-.bottom-button {
-  width: 34px;
-  height: 34px;
-
-  display: grid;
-  place-items: center;
+.footer-arrow {
+  width: 32px;
+  height: 32px;
 
   border: 0;
+  background: transparent;
 
-  background:
-    transparent;
-
-  cursor: pointer;
-
-  color:
-    rgba(255, 255, 255, 0.8);
-
-  transition:
-    color 180ms ease,
-    opacity 180ms ease;
+  color: rgba(255,255,255,.8);
 }
 
-.bottom-button:hover:not(:disabled) {
-  color: white;
+.footer-arrow:disabled {
+  opacity: .2;
 }
-
-.bottom-button:disabled {
-  opacity: 0.2;
-
-  cursor: default;
-}
-
-/* =========================================================
-   DOTS
-========================================================= */
 
 .page-dots {
   display: flex;
   align-items: center;
-
   gap: 7px;
 }
 
@@ -695,24 +586,9 @@ a {
   border: 0;
   border-radius: 50%;
 
-  background:
-    rgba(255, 255, 255, 0.25);
+  background: rgba(255,255,255,.25);
 
-  cursor: pointer;
-
-  transition:
-    width 180ms ease,
-    border-radius 180ms ease,
-    background 180ms ease,
-    transform 180ms ease;
-}
-
-.page-dot:hover {
-  transform:
-    scale(1.4);
-
-  background:
-    rgba(255, 255, 255, 0.55);
+  transition: .18s ease;
 }
 
 .page-dot.active {
@@ -720,24 +596,14 @@ a {
 
   border-radius: 10px;
 
-  background:
-    var(--akros-green);
+  background: var(--green);
 }
 
-/* =========================================================
-   AYUDA
-========================================================= */
-
-.reader-help {
+.footer-help {
   justify-self: end;
 
-  color:
-    rgba(255, 255, 255, 0.4);
-
-  font-size: 0.64rem;
-
-  letter-spacing:
-    0.04em;
+  color: rgba(255,255,255,.4);
+  font-size: .61rem;
 }
 
 .mobile-help {
@@ -745,92 +611,228 @@ a {
 }
 
 /* =========================================================
-   MENSAJE "ARRASTRA UNA ESQUINA"
+   MODO LECTURA
 ========================================================= */
 
-.drag-hint {
+.reading-mode {
   position: fixed;
+  z-index: 5000;
 
-  z-index: 1500;
+  inset: 0;
 
-  right: 92px;
-  bottom:
-    calc(var(--footer-height) + 28px);
+  display: none;
+
+  grid-template-rows:
+    64px minmax(0,1fr);
+
+  background: #151715;
+}
+
+.reading-mode.open {
+  display: grid;
+}
+
+.reading-header {
+  position: relative;
+  z-index: 20;
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  gap: 11px;
+  padding: 0 22px;
 
-  padding:
-    10px 15px;
-
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.13);
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(10, 11, 10, 0.76);
-
-  box-shadow:
-    0 12px 30px
-    rgba(0, 0, 0, 0.28);
-
-  backdrop-filter:
-    blur(12px);
-
-  pointer-events: none;
-
-  animation:
-    dragHintDisappear
-    6s forwards;
+  background: #0d0e0d;
+  border-bottom: 1px solid var(--line);
 }
 
-.drag-hint-icon {
-  color:
-    var(--akros-green);
-
-  font-size:
-    1.5rem;
+.reading-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.drag-hint div {
+.reading-close {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 50%;
+
+  background: transparent;
+}
+
+.reading-title {
   display: flex;
   flex-direction: column;
-
-  gap: 1px;
 }
 
-.drag-hint strong {
-  font-size:
-    0.59rem;
-
-  letter-spacing:
-    0.08em;
+.reading-title strong {
+  font-family: "Libre Caslon Display", Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
-.drag-hint div span {
-  color:
-    rgba(255, 255, 255, 0.55);
+.reading-title span {
+  margin-top: 2px;
 
-  font-size:
-    0.57rem;
+  color: var(--muted);
+  font-size: .62rem;
 }
 
-@keyframes dragHintDisappear {
+.reading-tools {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
 
-  0%,
-  65% {
-    opacity: 1;
-  }
+.reading-tool {
+  width: 38px;
+  height: 38px;
 
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 6px;
+
+  color: white;
+  background: rgba(255,255,255,.04);
+}
+
+.reading-zoom-value {
+  width: 52px;
+
+  text-align: center;
+
+  color: var(--muted);
+  font-size: .65rem;
+}
+
+/* =========================================================
+   PÁGINA DE LECTURA
+========================================================= */
+
+.reading-scroll {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: auto;
+
+  padding:
+    34px 80px 90px;
+
+  background:
+    radial-gradient(
+      circle at top center,
+      #303330,
+      #171917 65%
+    );
+}
+
+.reading-page-wrapper {
+  width: max-content;
+
+  min-width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  transform-origin: top center;
+}
+
+.reading-page-wrapper img {
+  /*
+    ESTA ES LA DIFERENCIA IMPORTANTE.
+
+    La página de lectura comienza
+    considerablemente más grande que
+    la página del spread.
+  */
+
+  width: min(1050px, 88vw);
+  height: auto;
+
+  display: block;
+
+  background: white;
+
+  transform:
+    scale(var(--reading-zoom));
+
+  transform-origin:
+    top center;
+
+  image-rendering: auto;
+
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.55);
+
+  -webkit-user-drag: none;
+}
+
+/* =========================================================
+   FLECHAS LECTURA
+========================================================= */
+
+.reading-navigation {
+  position: fixed;
+  z-index: 30;
+
+  top: 50%;
+
+  width: 50px;
+  height: 70px;
+
+  transform: translateY(-50%);
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+
+  background: rgba(8,9,8,.7);
+
+  font-family: Georgia, serif;
+  font-size: 2.5rem;
+}
+
+.reading-navigation-left {
+  left: 15px;
+}
+
+.reading-navigation-right {
+  right: 15px;
+}
+
+.reading-navigation:disabled {
+  opacity: .15;
+}
+
+.reading-bottom-info {
+  position: fixed;
+  z-index: 30;
+
+  left: 50%;
+  bottom: 16px;
+
+  transform: translateX(-50%);
+
+  padding: 8px 13px;
+
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+
+  background: rgba(8,9,8,.75);
+
+  color: rgba(255,255,255,.65);
+
+  font-size: .62rem;
+
+  backdrop-filter: blur(12px);
 }
 
 /* =========================================================
@@ -839,66 +841,48 @@ a {
 
 .reader-loader {
   position: fixed;
+  z-index: 9000;
 
-  z-index: 3000;
-
-  inset:
-    var(--header-height)
-    0
-    var(--footer-height)
-    0;
+  inset: var(--header-height) 0 var(--footer-height);
 
   display: flex;
   flex-direction: column;
 
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  gap: 18px;
+  gap: 16px;
 
   background:
     radial-gradient(
-      circle at center,
-      #292c29,
-      #171817 70%
+      circle,
+      #303330,
+      #171917 70%
     );
 
   transition:
-    opacity 350ms ease,
-    visibility 350ms ease;
+    opacity .3s ease,
+    visibility .3s ease;
 }
 
 .reader-loader.hidden {
   opacity: 0;
-
   visibility: hidden;
-
   pointer-events: none;
 }
 
 .loader-logo {
-  width: 68px;
-  height: 68px;
+  width: 64px;
+  height: 64px;
 
   padding: 5px;
 
   display: grid;
   place-items: center;
 
-  background:
-    white;
+  border-radius: 7px;
 
-  border-radius:
-    8px;
-
-  box-shadow:
-    0 12px 35px
-    rgba(0, 0, 0, 0.3);
-
-  animation:
-    loaderPulse
-    1.4s ease-in-out
-    infinite;
+  background: white;
 }
 
 .loader-logo img {
@@ -909,205 +893,63 @@ a {
 }
 
 .reader-loader > span {
-  color:
-    rgba(255, 255, 255, 0.58);
+  color: var(--muted);
 
-  font-size:
-    0.65rem;
+  font-size: .62rem;
 
-  letter-spacing:
-    0.09em;
-
-  text-transform:
-    uppercase;
-}
-
-@keyframes loaderPulse {
-
-  0%,
-  100% {
-    transform:
-      scale(1);
-
-    opacity:
-      0.85;
-  }
-
-  50% {
-    transform:
-      scale(1.05);
-
-    opacity:
-      1;
-  }
-}
-
-/* =========================================================
-   ZOOM OVERLAY
-========================================================= */
-
-.zoom-overlay {
-  position: fixed;
-
-  z-index: 5000;
-
-  inset: 0;
-
-  display: none;
-
-  background:
-    rgba(8, 9, 8, 0.97);
-
-  backdrop-filter:
-    blur(12px);
-}
-
-.zoom-overlay.open {
-  display: block;
-}
-
-.zoom-close {
-  position: fixed;
-
-  z-index: 10;
-
-  top: 20px;
-  right: 24px;
-
-  width: 44px;
-  height: 44px;
-
-  display: grid;
-  place-items: center;
-
-  border:
-    1px solid rgba(255, 255, 255, 0.2);
-
-  border-radius: 50%;
-
-  color: white;
-
-  background:
-    rgba(0, 0, 0, 0.5);
-
-  cursor: pointer;
-
-  font-size:
-    1.8rem;
-}
-
-.zoom-scroll {
-  width: 100%;
-  height: 100%;
-
-  overflow: auto;
-
-  padding:
-    65px 30px;
-
-  text-align: center;
-}
-
-.zoom-scroll img {
-  width: auto;
-
-  min-width:
-    min(100%, 900px);
-
-  max-width: none;
-
-  height: auto;
-
-  box-shadow:
-    0 25px 80px
-    rgba(0, 0, 0, 0.7);
-}
-
-/* =========================================================
-   FULLSCREEN
-========================================================= */
-
-.reader:fullscreen {
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      #343734,
-      #171817 72%
-    );
+  text-transform: uppercase;
+  letter-spacing: .08em;
 }
 
 /* =========================================================
    TABLET
 ========================================================= */
 
-@media (max-width: 1000px) {
-
-  :root {
-    --header-height: 68px;
-    --footer-height: 64px;
-  }
-
-  .reader-header {
-    padding:
-      0 17px;
-  }
-
-  .reader-logo {
-    width: 34px;
-    height: 34px;
-  }
-
-  .reader-title strong {
-    font-size:
-      1rem;
-  }
-
-  .reader-title span {
-    font-size:
-      0.61rem;
-  }
+@media (max-width: 1050px) {
 
   .magazine-stage {
-    padding:
-      18px 62px;
+    padding-left: 58px;
+    padding-right: 58px;
   }
 
-  .page-arrow {
-    width: 42px;
-    height: 62px;
+  .magazine-page {
+    height: min(
+      calc(
+        100vh -
+        var(--header-height) -
+        var(--footer-height) -
+        30px
+      ),
+      700px
+    );
   }
 
-  .page-arrow-left {
-    left: 12px;
+  .navigation-arrow-left {
+    left: 9px;
   }
 
-  .page-arrow-right {
-    right: 12px;
-  }
-
-  .drag-hint {
-    right: 65px;
+  .navigation-arrow-right {
+    right: 9px;
   }
 }
 
 /* =========================================================
-   MÓVIL
+   CELULAR
 ========================================================= */
 
 @media (max-width: 700px) {
 
   :root {
-    --header-height: 62px;
-    --footer-height: 60px;
+    --header-height: 58px;
+    --footer-height: 54px;
   }
 
   .reader-header {
-    padding:
-      0 11px;
+    padding: 0 9px;
   }
 
-  .reader-header-left {
-    gap: 9px;
+  .header-left {
+    gap: 6px;
   }
 
   .back-button {
@@ -1117,105 +959,194 @@ a {
     border: 0;
   }
 
-  .reader-logo {
+  .publication-brand {
+    gap: 7px;
+  }
+
+  .akros-logo {
     width: 30px;
     height: 30px;
   }
 
-  .reader-title strong {
-    font-size:
-      0.91rem;
+  .publication-info strong {
+    font-size: .86rem;
   }
 
-  .reader-title span {
-    max-width:
-      150px;
+  .publication-info span {
+    max-width: 125px;
 
-    overflow:
-      hidden;
+    overflow: hidden;
 
-    text-overflow:
-      ellipsis;
+    white-space: nowrap;
 
-    white-space:
-      nowrap;
+    text-overflow: ellipsis;
 
-    font-size:
-      0.56rem;
+    font-size: .52rem;
   }
 
-  .reader-header-actions {
-    gap: 3px;
+  .desktop-only {
+    display: none !important;
   }
 
-  .zoom-value,
-  #zoomOutButton,
-  #zoomInButton {
-    display: none;
-  }
-
-  .header-action {
+  .header-button {
     width: 34px;
     height: 34px;
 
     border: 0;
-
-    background:
-      transparent;
+    background: transparent;
   }
 
-  .fullscreen-button {
-    margin-left: 0;
-  }
-
-  .download-link {
+  .download-button {
     width: 34px;
     height: 34px;
 
-    margin-left: 0;
-
     padding: 0;
 
-    justify-content:
-      center;
+    justify-content: center;
   }
 
-  .download-desktop {
+  .download-text {
     display: none;
   }
+
+  /* -------------------------------------------------------
+     DESACTIVAR REVISTA DE DOS PÁGINAS
+  ------------------------------------------------------- */
+
+  .desktop-magazine {
+    display: none;
+  }
+
+  .navigation-arrow {
+    display: none;
+  }
+
+  /* -------------------------------------------------------
+     REVISTA MÓVIL
+  ------------------------------------------------------- */
 
   .magazine-stage {
-    padding:
-      12px 8px 15px;
+    padding: 7px 5px;
   }
 
-  .page-arrow {
-    display: none;
+  .mobile-magazine {
+    position: relative;
+    z-index: 10;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    touch-action: pan-y;
   }
 
-  .reader-controls-inner {
-    padding:
-      0 14px;
+  .mobile-page-container {
+    position: relative;
+
+    max-width: 100%;
+    max-height: calc(100% - 30px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+      transform .22s ease,
+      opacity .22s ease;
+  }
+
+  .mobile-page-container img {
+    display: block;
+
+    /*
+      Casi todo el ancho del teléfono.
+    */
+
+    width: min(94vw, 520px);
+
+    max-height:
+      calc(
+        100dvh -
+        var(--header-height) -
+        var(--footer-height) -
+        42px
+      );
+
+    height: auto;
+
+    object-fit: contain;
+
+    background: white;
+
+    box-shadow:
+      0 14px 38px rgba(0,0,0,.42);
+
+    image-rendering: auto;
+
+    -webkit-user-drag: none;
+  }
+
+  .mobile-page-container.slide-left {
+    transform: translateX(-22%);
+    opacity: 0;
+  }
+
+  .mobile-page-container.slide-right {
+    transform: translateX(22%);
+    opacity: 0;
+  }
+
+  .swipe-indicator {
+    height: 25px;
+
+    margin-top: 5px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    color: rgba(255,255,255,.38);
+
+    font-size: .54rem;
+  }
+
+  /* -------------------------------------------------------
+     FOOTER
+  ------------------------------------------------------- */
+
+  .reader-footer {
+    padding: 0 10px;
 
     grid-template-columns:
       auto 1fr auto;
 
-    gap: 10px;
+    gap: 5px;
   }
 
-  .bottom-navigation {
-    justify-content:
-      center;
-
-    gap: 8px;
+  .footer-left {
+    font-size: .57rem;
   }
 
-  .bottom-button {
+  .footer-center {
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .footer-arrow {
     display: none;
   }
 
   .page-dots {
-    gap: 6px;
+    gap: 5px;
   }
 
   .page-dot {
@@ -1224,12 +1155,7 @@ a {
   }
 
   .page-dot.active {
-    width: 15px;
-  }
-
-  .reader-help {
-    font-size:
-      0.55rem;
+    width: 14px;
   }
 
   .desktop-help {
@@ -1240,74 +1166,148 @@ a {
     display: inline;
   }
 
-  .drag-hint {
-    right: 50%;
-    bottom:
-      calc(
-        var(--footer-height) + 18px
-      );
+  .footer-help {
+    font-size: .5rem;
+  }
 
-    transform:
-      translateX(50%);
+  /* -------------------------------------------------------
+     MODO LECTURA MÓVIL
+  ------------------------------------------------------- */
 
-    white-space:
-      nowrap;
+  .reading-mode {
+    grid-template-rows:
+      56px minmax(0,1fr);
+  }
+
+  .reading-header {
+    padding: 0 8px;
+  }
+
+  .reading-header-left {
+    gap: 7px;
+  }
+
+  .reading-close {
+    width: 35px;
+    height: 35px;
+
+    border: 0;
+  }
+
+  .reading-title strong {
+    font-size: .84rem;
+  }
+
+  .reading-title span {
+    font-size: .53rem;
+  }
+
+  .reading-tools {
+    gap: 2px;
+  }
+
+  .reading-tool {
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+    background: transparent;
+  }
+
+  .reading-zoom-value {
+    width: 40px;
+    font-size: .56rem;
+  }
+
+  .reading-scroll {
+    padding:
+      18px 8px 75px;
+
+    /*
+      En lectura ampliada permitimos
+      desplazamiento horizontal y vertical.
+    */
+
+    overflow: auto;
+  }
+
+  .reading-page-wrapper {
+    min-width: max(100%, 760px);
+
+    justify-content: flex-start;
+  }
+
+  .reading-page-wrapper img {
+    /*
+      Aquí la página es deliberadamente
+      más ancha que el teléfono.
+
+      El usuario puede desplazarse para
+      leer texto pequeño.
+    */
+
+    width: 760px;
+
+    max-width: none;
+
+    margin: 0 auto;
+  }
+
+  .reading-navigation {
+    display: none;
+  }
+
+  .reading-bottom-info {
+    bottom: 10px;
+
+    font-size: .55rem;
   }
 }
 
 /* =========================================================
-   TELÉFONO PEQUEÑO
+   CELULAR PEQUEÑO
 ========================================================= */
 
-@media (max-width: 430px) {
+@media (max-width: 420px) {
 
-  .reader-brand {
-    gap: 8px;
-  }
-
-  .reader-logo {
+  .akros-logo {
     display: none;
   }
 
-  .reader-title span {
-    max-width:
-      125px;
+  .publication-info span {
+    max-width: 105px;
   }
 
-  .page-information {
-    font-size:
-      0.59rem;
-  }
-
-  .reader-help {
+  .footer-help {
     display: none;
   }
 
-  .reader-controls-inner {
+  .reader-footer {
     grid-template-columns:
       auto 1fr;
   }
 }
 
 /* =========================================================
-   REDUCIR MOVIMIENTO
+   FULLSCREEN
 ========================================================= */
 
-@media (
-  prefers-reduced-motion:
-  reduce
-) {
+.reader:fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* =========================================================
+   MOVIMIENTO REDUCIDO
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
 
   *,
   *::before,
   *::after {
-    animation-duration:
-      0.01ms !important;
-
-    animation-iteration-count:
-      1 !important;
-
-    transition-duration:
-      0.01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
 }
