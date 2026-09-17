@@ -1,0 +1,552 @@
+/* =========================================================
+   PUBLICACIÓN · PERIÓDICO ESCOLAR AKROS
+   Página individual de El Desayuno
+========================================================= */
+
+
+/* =========================================================
+   HERO DE PUBLICACIÓN
+========================================================= */
+
+.publication-hero {
+  position: relative;
+  overflow: hidden;
+  background: #f3eedf;
+  border-bottom: 1px solid rgba(20, 25, 21, 0.12);
+}
+
+.publication-hero::before {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  right: -130px;
+  top: -190px;
+  border-radius: 50%;
+  background: rgba(23, 143, 69, 0.09);
+}
+
+.publication-hero::after {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 170px;
+  right: 40px;
+  bottom: -100px;
+  background: rgba(202, 34, 111, 0.08);
+  transform: rotate(18deg);
+}
+
+.publication-hero-container {
+  position: relative;
+  z-index: 2;
+  width: min(1180px, calc(100% - 48px));
+  min-height: 650px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 80px;
+  padding: 72px 0;
+}
+
+
+/* =========================================================
+   INTRODUCCIÓN
+========================================================= */
+
+.publication-intro {
+  max-width: 600px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 58px;
+  color: #626860;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #148c46;
+}
+
+.publication-number {
+  margin-bottom: 20px;
+  color: #148c46;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.publication-intro h1 {
+  margin: 0;
+  color: #141915;
+  font-family: "Libre Caslon Display", Georgia, serif;
+  font-size: clamp(4.4rem, 7vw, 7.4rem);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+}
+
+.publication-intro h1 span {
+  display: block;
+  color: #148c46;
+  font-style: italic;
+}
+
+.publication-description {
+  max-width: 520px;
+  margin: 38px 0 0;
+  color: #5d625c;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.publication-meta {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(20, 25, 21, 0.17);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.publication-meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.publication-meta span {
+  color: #7c817b;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.publication-meta strong {
+  color: #20251f;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   PORTADA
+========================================================= */
+
+.publication-visual {
+  position: relative;
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.publication-word {
+  position: absolute;
+  z-index: 1;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  color: rgba(20, 140, 70, 0.1);
+  font-family: Georgia, serif;
+  font-size: 5.5rem;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.publication-cover {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: min(335px, 80%);
+  background: #fff;
+  transform: rotate(2.2deg);
+  box-shadow:
+    0 12px 20px rgba(0, 0, 0, 0.08),
+    0 35px 75px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.publication-cover::before,
+.publication-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.publication-cover::before {
+  transform: translate(8px, 6px) rotate(1deg);
+}
+
+.publication-cover::after {
+  transform: translate(15px, 12px) rotate(1.8deg);
+}
+
+.publication-cover img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.publication-cover:hover {
+  transform: rotate(0deg) translateY(-8px) scale(1.02);
+  box-shadow:
+    0 15px 25px rgba(0, 0, 0, 0.08),
+    0 42px 85px rgba(0, 0, 0, 0.24);
+}
+
+
+/* =========================================================
+   SECCIÓN EDICIONES
+========================================================= */
+
+.publication-editions {
+  background: #fbfaf6;
+  padding: 105px 0 120px;
+}
+
+.publication-editions-container {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.section-heading {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 70px;
+}
+
+.section-kicker {
+  display: block;
+  margin-bottom: 17px;
+  color: #148c46;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #171b18;
+  font-family: "Libre Caslon Display", Georgia, serif;
+  font-size: clamp(3.1rem, 5vw, 5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.section-heading h2 em {
+  color: #148c46;
+  font-weight: 400;
+}
+
+.section-heading > p {
+  max-width: 400px;
+  margin: 0 0 7px;
+  color: #676c66;
+  font-size: 0.87rem;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   TARJETA DE EDICIÓN
+========================================================= */
+
+.edition-card {
+  display: grid;
+  grid-template-columns: 390px 1fr;
+  min-height: 470px;
+  border: 1px solid rgba(20, 25, 21, 0.16);
+  background: #fff;
+}
+
+.edition-cover {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 42px;
+  background: #e9e7df;
+}
+
+.edition-cover::before {
+  content: "25";
+  position: absolute;
+  left: -10px;
+  bottom: -65px;
+  color: rgba(20, 140, 70, 0.07);
+  font-family: Georgia, serif;
+  font-size: 17rem;
+  line-height: 1;
+}
+
+.edition-cover img {
+  position: relative;
+  z-index: 2;
+  width: 235px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
+  transition: transform 0.28s ease;
+}
+
+.edition-cover:hover img {
+  transform: translateY(-7px) rotate(-1deg);
+}
+
+.edition-content {
+  padding: 68px 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.edition-publication {
+  color: #148c46;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.edition-date {
+  margin-top: 8px;
+  color: #777c76;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+
+.edition-content h3 {
+  margin: 27px 0 18px;
+  color: #171b18;
+  font-family: "Libre Caslon Display", Georgia, serif;
+  font-size: clamp(2.5rem, 4vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+.edition-content p {
+  max-width: 550px;
+  margin: 0;
+  color: #656a64;
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.edition-actions {
+  margin-top: 42px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.edition-read {
+  min-width: 160px;
+  padding: 15px 19px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  background: #148c46;
+  border: 1px solid #148c46;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.edition-read:hover {
+  background: #0d7137;
+  transform: translateY(-2px);
+}
+
+.edition-download {
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(20, 25, 21, 0.28);
+  color: #20251f;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   FUTURAS EDICIONES
+========================================================= */
+
+.future-editions {
+  min-height: 270px;
+  margin-top: 28px;
+  border: 1px dashed rgba(20, 25, 21, 0.22);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.future-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(20, 25, 21, 0.2);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #148c46;
+  font-size: 1.5rem;
+}
+
+.future-editions strong {
+  color: #20251f;
+  font-family: "Libre Caslon Display", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+}
+
+.future-editions p {
+  margin: 9px 0 0;
+  color: #777c76;
+  font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .publication-hero-container {
+    grid-template-columns: 1fr 0.8fr;
+    gap: 40px;
+  }
+
+  .publication-cover {
+    width: min(290px, 85%);
+  }
+
+  .publication-word {
+    display: none;
+  }
+
+  .edition-card {
+    grid-template-columns: 330px 1fr;
+  }
+
+  .edition-content {
+    padding: 55px 48px;
+  }
+}
+
+
+@media (max-width: 800px) {
+
+  .publication-hero-container {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 55px;
+    padding: 55px 0 75px;
+  }
+
+  .back-link {
+    margin-bottom: 40px;
+  }
+
+  .publication-intro h1 {
+    font-size: clamp(4rem, 17vw, 6rem);
+  }
+
+  .publication-meta {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .publication-visual {
+    min-height: auto;
+  }
+
+  .publication-cover {
+    width: min(290px, 72vw);
+  }
+
+  .publication-editions {
+    padding: 75px 0 90px;
+  }
+
+  .section-heading {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-bottom: 45px;
+  }
+
+  .edition-card {
+    grid-template-columns: 1fr;
+  }
+
+  .edition-cover {
+    min-height: 430px;
+  }
+
+  .edition-content {
+    padding: 45px 35px;
+  }
+}
+
+
+@media (max-width: 520px) {
+
+  .publication-hero-container,
+  .publication-editions-container {
+    width: min(100% - 30px, 1180px);
+  }
+
+  .publication-description {
+    font-size: 0.92rem;
+  }
+
+  .edition-cover {
+    min-height: 360px;
+    padding: 35px;
+  }
+
+  .edition-cover img {
+    width: 205px;
+  }
+
+  .edition-content {
+    padding: 38px 25px;
+  }
+
+  .edition-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .edition-read {
+    width: 100%;
+  }
+
+  .edition-download {
+    align-self: flex-start;
+  }
+}
