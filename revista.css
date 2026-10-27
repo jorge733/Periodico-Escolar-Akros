@@ -276,39 +276,86 @@ a {
 }
 
 /* =========================================================
-   PÁGINA
+   REVISTA 3D
+
+   Cada hoja (.leaf) tiene dos caras y gira sobre el lomo.
+   El tamaño de la página lo calcula revista.js según el
+   espacio disponible (--page-w y --page-h).
 ========================================================= */
 
-.magazine-page {
+.flipbook {
   position: relative;
 
-  height: min(
-    calc(
-      100vh -
-      var(--header-height) -
-      var(--footer-height) -
-      22px
-    ),
-    780px
-  );
+  width: var(--book-w, 0px);
+  height: var(--page-h, 0px);
 
-  aspect-ratio: 1530 / 2339;
+  perspective: 2600px;
+  perspective-origin: 50% 50%;
+
+  touch-action: pan-y pinch-zoom;
+
+  cursor: grab;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flipbook.is-dragging {
+  cursor: grabbing;
+}
+
+.leaf {
+  --lift: 0;
+  --front-shade: 0;
+  --back-shade: 0;
+
+  position: absolute;
+  top: 0;
+  left: var(--leaf-left, 0px);
+
+  width: var(--page-w, 0px);
+  height: 100%;
+
+  transform-origin: left center;
+  transform-style: preserve-3d;
+
+  will-change: transform;
+}
+
+.leaf.is-gone {
+  visibility: hidden;
+}
+
+.leaf-face {
+  position: absolute;
+  inset: 0;
 
   overflow: hidden;
 
-  background: white;
+  background: #fbfaf6;
 
-  box-shadow:
-    0 16px 45px rgba(0,0,0,.4);
-
-  cursor: zoom-in;
-
-  user-select: none;
-
-  -webkit-user-select: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-.magazine-page img {
+/*
+  Solo las hojas visibles (y las que están justo debajo)
+  llevan sombra, para que no se acumulen.
+*/
+
+.leaf.has-shadow .leaf-face {
+  box-shadow:
+    0 calc(10px + var(--lift) * 18px)
+    calc(28px + var(--lift) * 40px)
+    rgba(0,0,0,calc(.34 + var(--lift) * .2));
+}
+
+.leaf-back {
+  transform: rotateY(180deg);
+}
+
+.leaf-face img {
   display: block;
 
   width: 100%;
@@ -316,150 +363,94 @@ a {
 
   object-fit: cover;
 
-  image-rendering: auto;
+  pointer-events: none;
 
   -webkit-user-drag: none;
 }
 
-/* =========================================================
-   PORTADA
-========================================================= */
+/*
+  Sombra fija del lomo: la cara frontal lo tiene a la
+  izquierda y la cara trasera, a la derecha.
+*/
 
-.magazine-book.cover-view {
-  justify-content: center;
-}
-
-.magazine-book.cover-view .magazine-page {
-  height: min(
-    calc(
-      100vh -
-      var(--header-height) -
-      var(--footer-height) -
-      18px
-    ),
-    810px
-  );
-}
-
-/* =========================================================
-   SPREAD
-========================================================= */
-
-.magazine-book.spread-view {
-  gap: 0;
-}
-
-.magazine-book.spread-view .magazine-page-left {
-  transform-origin: right center;
-}
-
-.magazine-book.spread-view .magazine-page-right {
-  transform-origin: left center;
-}
-
-/* =========================================================
-   LOMO
-========================================================= */
-
-.magazine-book.spread-view::after {
+.leaf-face::before {
   content: "";
 
   position: absolute;
-  z-index: 20;
-
-  top: 0;
-  bottom: 0;
-  left: 50%;
-
-  width: 18px;
-
-  transform: translateX(-50%);
+  inset: 0;
+  z-index: 1;
 
   pointer-events: none;
+}
 
+.leaf-front::before {
   background:
     linear-gradient(
-      90deg,
-      rgba(0,0,0,.17),
-      rgba(0,0,0,.02),
-      rgba(255,255,255,.06),
-      rgba(0,0,0,.03),
-      rgba(0,0,0,.17)
+      to right,
+      rgba(0,0,0,.2),
+      rgba(0,0,0,.05) 3%,
+      transparent 9%
     );
 }
 
-/* =========================================================
-   ANIMACIÓN
-
-   La página saliente gira como una hoja.
-========================================================= */
-
-.magazine-page.turning-next {
-  z-index: 40;
-
-  animation:
-    pageTurnNext
-    560ms cubic-bezier(.55,.05,.35,1)
-    forwards;
+.leaf-back::before {
+  background:
+    linear-gradient(
+      to left,
+      rgba(0,0,0,.2),
+      rgba(0,0,0,.05) 3%,
+      transparent 9%
+    );
 }
 
-.magazine-page.turning-prev {
-  z-index: 40;
+/*
+  Luz y sombra mientras la hoja gira: simula la curva
+  del papel.
+*/
 
-  animation:
-    pageTurnPrevious
-    560ms cubic-bezier(.55,.05,.35,1)
-    forwards;
+.leaf-face::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  pointer-events: none;
 }
 
-@keyframes pageTurnNext {
-  0% {
-    transform:
-      perspective(1800px)
-      rotateY(0deg);
-  }
+.leaf-front::after {
+  opacity: var(--front-shade);
 
-  45% {
-    filter:
-      brightness(.82);
-
-    box-shadow:
-      -20px 12px 45px
-      rgba(0,0,0,.38);
-  }
-
-  100% {
-    transform:
-      perspective(1800px)
-      rotateY(-90deg);
-
-    opacity: .2;
-  }
+  background:
+    linear-gradient(
+      to left,
+      rgba(0,0,0,.55),
+      rgba(0,0,0,.18) 35%,
+      rgba(255,255,255,.18) 70%,
+      rgba(0,0,0,.25)
+    );
 }
 
-@keyframes pageTurnPrevious {
-  0% {
-    transform:
-      perspective(1800px)
-      rotateY(0deg);
-  }
+.leaf-back::after {
+  opacity: var(--back-shade);
 
-  45% {
-    filter:
-      brightness(.84);
+  background:
+    linear-gradient(
+      to right,
+      rgba(0,0,0,.55),
+      rgba(0,0,0,.18) 35%,
+      rgba(255,255,255,.18) 70%,
+      rgba(0,0,0,.25)
+    );
+}
 
-    box-shadow:
-      20px 12px 45px
-      rgba(0,0,0,.38);
-  }
-
-  100% {
-    transform:
-      perspective(1800px)
-      rotateY(90deg);
-
-    opacity: .2;
-  }
+.leaf-blank {
+  background:
+    linear-gradient(
+      135deg,
+      #f7f4ec,
+      #ece7da
+    );
 }
 
 /* =========================================================
@@ -912,18 +903,6 @@ a {
     padding-right: 58px;
   }
 
-  .magazine-page {
-    height: min(
-      calc(
-        100vh -
-        var(--header-height) -
-        var(--footer-height) -
-        30px
-      ),
-      700px
-    );
-  }
-
   .navigation-arrow-left {
     left: 9px;
   }
@@ -1052,56 +1031,10 @@ a {
     position: relative;
 
     max-width: 100%;
-    max-height: calc(100% - 30px);
 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    transition:
-      transform .22s ease,
-      opacity .22s ease;
-  }
-
-  .mobile-page-container img {
-    display: block;
-
-    /*
-      Casi todo el ancho del teléfono.
-    */
-
-    width: min(94vw, 520px);
-
-    max-height:
-      calc(
-        100dvh -
-        var(--header-height) -
-        var(--footer-height) -
-        42px
-      );
-
-    height: auto;
-
-    object-fit: contain;
-
-    background: white;
-
-    box-shadow:
-      0 14px 38px rgba(0,0,0,.42);
-
-    image-rendering: auto;
-
-    -webkit-user-drag: none;
-  }
-
-  .mobile-page-container.slide-left {
-    transform: translateX(-22%);
-    opacity: 0;
-  }
-
-  .mobile-page-container.slide-right {
-    transform: translateX(22%);
-    opacity: 0;
   }
 
   .swipe-indicator {
