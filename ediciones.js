@@ -26,7 +26,37 @@ const AKROS_EDICIONES = {
     descripcion:
       "Historias, aprendizajes y experiencias de nuestros estudiantes más pequeños.",
 
-    ediciones: []
+    ediciones: [
+
+      /* ---------------------------------------------------
+         2026 · EDICIÓN N.º 26
+      --------------------------------------------------- */
+
+      {
+
+        anio: 2026,
+
+        numero: 26,
+
+        fecha: "Octubre 2026",
+
+        paginas: 2,
+
+        carpeta:
+          "assets/ediciones/desayunito/2026/26",
+
+        portada:
+          "assets/ediciones/desayunito/2026/26/pagina-01.webp",
+
+        pdf:
+          "assets/ediciones/desayunito/2026/26/el-desayunito-26.pdf",
+
+        descripcion:
+          "Segunda edición de El Desayunito con protagonistas, recomendados y el desafío de El Desayunito."
+
+      }
+
+    ]
 
   },
 
