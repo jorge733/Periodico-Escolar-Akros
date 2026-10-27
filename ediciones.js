@@ -79,6 +79,35 @@ const AKROS_EDICIONES = {
     ediciones: [
 
       /* ---------------------------------------------------
+         2026 · EDICIÓN N.º 26
+      --------------------------------------------------- */
+
+      {
+
+        anio: 2026,
+
+        numero: 26,
+
+        fecha: "Octubre 2026",
+
+        paginas: 6,
+
+        carpeta:
+          "assets/ediciones/desayuno/2026/26",
+
+        portada:
+          "assets/ediciones/desayuno/2026/26/pagina-01.webp",
+
+        pdf:
+          "assets/ediciones/desayuno/2026/26/el-desayuno-26.pdf",
+
+        descripcion:
+          "Edición de octubre de 2026 con entrevista a Ms. Maritza Cottenie, la medalla de bronce de la selección femenina de fútbol, Dos Miradas sobre inteligencia artificial y aprendizaje, recomendados y el desafío de El Desayuno."
+
+      },
+
+
+      /* ---------------------------------------------------
          2026 · EDICIÓN N.º 25
       --------------------------------------------------- */
 
